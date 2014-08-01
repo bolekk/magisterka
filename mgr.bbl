@@ -1,0 +1,21 @@
+\begin{thebibliography}{23}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abraham et~al.(2006)Abraham, Bir{\'o}, and Manlove]{abraham2006almost}
+D.~Abraham, P.~Bir{\'o}, and D.~Manlove.
+\newblock “almost stable” matchings in the roommates problem.
+\newblock \emph{Approximation and online algorithms}, pages 1--14, 2006.
+
+\bibitem[Zhao et~al.(2004)Zhao, Huang, Stribling, Rhea, Joseph, and
+  Kubiatowicz]{zhao2004tapestry}
+B.Y. Zhao, L.~Huang, J.~Stribling, S.C. Rhea, A.D. Joseph, and J.D.
+  Kubiatowicz.
+\newblock Tapestry: A resilient global-scale overlay for service deployment.
+\newblock \emph{Selected Areas in Communications, IEEE Journal on}, 22\penalty0
+  (1):\penalty0 41--53, 2004.
+
+\end{thebibliography}
