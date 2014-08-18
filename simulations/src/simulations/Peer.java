@@ -1,38 +1,36 @@
 package simulations;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Peer {
   private static final int SHIFT = 1000;
   
   private final int T;
   private List<Boolean> av;
-  private List<Boolean> sumAv;
+  int nAv;
+  List<Boolean> sumAv;
   private int slots;
   private int slotsAvail;
-  private List<Peer> replicas;
+  private Set<Peer> myReplicas;
+  private Set<Peer> iReplicate;
 
   public Peer(int T, List<Boolean> av, int slots) {
     this.T = T;
-    this.av = av;
+    this.setAv(av);
     this.sumAv = new ArrayList<>(av);
+    this.nAv = getSumAv();
     this.slots = slots;
     this.slotsAvail = slots;
-    this.replicas = new ArrayList<>();
+    this.myReplicas = new HashSet<>();
+    this.iReplicate = new HashSet<>();
+    recalculateSumAv();
   }
-
-  // how good this peer is for us
-  public int score(Peer p) {
-    int adds = 0;
-    int copies = 0;
-    for (int i = 0; i < T; ++i) {
-      if (p.av.get(i)) {
-        if (sumAv.get(i)) ++copies;
-        else ++adds;
-      }
-    }
-    return adds * SHIFT + (SHIFT - 1 - copies); 
+  
+  public int getT() {
+    return T;
   }
   
   public int getSumAv() {
@@ -44,17 +42,36 @@ public class Peer {
   }
 
   public void acceptedBy(Peer peer) {
-    replicas.add(peer);
+    myReplicas.add(peer);
+    recalculateSumAv();
+  }
+
+  private void recalculateSumAv() {
     for (int i = 0; i < T; ++i) {
-      sumAv.set(i, sumAv.get(i) || peer.av.get(i));
+      sumAv.set(i, av.get(i));
+      for (Peer replica : myReplicas) {
+        if (replica.getAv().get(i)) {
+          sumAv.set(i, true);
+          break;
+        }
+      }  
     }
   }
 
-  public boolean offer(Peer peer) {
+  public boolean offer(Peer peer, Integer val) {
     return slotsAvail > 0;
   }
 
   public void replicate(Peer peer) {
+    iReplicate.add(peer);
     --slotsAvail;
+  }
+
+  public List<Boolean> getAv() {
+    return av;
+  }
+
+  public void setAv(List<Boolean> av) {
+    this.av = av;
   }
 }

@@ -12,12 +12,23 @@ public class Sim {
   private int nPeers;
   private List<Peer> peers;
   private Random rand;
+  private Measure measure;
+  private int slots = DEF_SLOTS;
 
-  public Sim(int nPeers, int T) {
+  public Sim(int nPeers, int T, Measure measure, int slots) {
     this.nPeers = nPeers;
     this.T = T;
     this.rand = new Random(122413);
+    this.measure = measure;
+    this.slots = slots;
     init();
+  }
+
+  private void init() {
+    peers = new ArrayList<>();
+    for (int i = 0; i < nPeers; ++i) {
+      peers.add(new Peer(T, randomAv(T, 8), slots));
+    }
   }
 
   public void run(int iters) {
@@ -30,19 +41,19 @@ public class Sim {
   
   public List<Stat> getResults() {
     List<Stat> stats = new ArrayList<>();
-    for (Peer p : peers) {
-      stats.add(new Stat(p.getSumAv()));
+    for (Peer peer : peers) {
+      stats.add(new Stat(peer, peer.getSumAv()));
     }
     return stats;
   }
   
   private class Elem implements Comparable<Elem> {
     public Integer val;
-    public Peer p;
+    public Peer peer;
     
     public Elem(int val, Peer p) {
       this.val = val;
-      this.p = p;
+      this.peer = p;
     }
 
     @Override
@@ -51,27 +62,20 @@ public class Sim {
     }
   }
   
-  // try to find better replicas
+  // try to find a single better replica
   private void find(Peer peer) {
     List<Elem> candidates = new ArrayList<>();
     for (Peer p : peers) {
       if (p == peer) continue;
-      candidates.add(new Elem(peer.score(p), p));
+      candidates.add(new Elem(measure.measure(peer, p), p));
     }
     Collections.sort(candidates);
     for (Elem e : candidates) {
-      if (e.p.offer(peer)) {
-        peer.acceptedBy(e.p);
-        e.p.replicate(peer);
+      if (e.peer.offer(peer, e.val)) {
+        peer.acceptedBy(e.peer);
+        e.peer.replicate(peer);
         break;
       }
-    }
-  }
-
-  private void init() {
-    peers = new ArrayList<>();
-    for (int i = 0; i < nPeers; ++i) {
-      peers.add(new Peer(T, randomAv(T, 8), DEF_SLOTS));
     }
   }
 

@@ -1,3 +1,4 @@
+% !TEX encoding = IsoLatin2
 \documentclass{pracamgren}
 
 \usepackage[cmex10]{amsmath} \interdisplaylinepenalty=2500
@@ -39,7 +40,7 @@ linesnumbered]{algorithm2e}
 
 \mathchardef\mhyphen="2D
 
-\author{Bolesław Kulbabiński}
+\author{Boleslaw Kulbabinski}
 
 \nralbumu{277531}
 
@@ -49,12 +50,11 @@ linesnumbered]{algorithm2e}
 
 \kierunek{Informatics}
 
-\opiekun{Krzysztof Rządca Ph.D.}
+\opiekun{Krzysztof Rzadca Ph.D.}
 
-% miesiąc i~rok:
-\date{June 2014}
+\date{September 2014}
 
-%Podać dziedzinę wg klasyfikacji Socrates-Erasmus:
+%Poda�? dziedzin�? wg klasyfikacji Socrates-Erasmus:
 \dziedzina{ 
 %11.0 Matematyka, Informatyka:\\ 11.1 Matematyka\\ 11.2 Statystyka\\ 
 11.3 Informatyka\\ 
@@ -70,18 +70,18 @@ Informatics, Computer Science\\
 }
 
 %Klasyfikacja tematyczna wedlug AMS (matematyka) lub ACM (informatyka)
-\klasyfikacja{C. Organizacja systemów komputerów\\ C.2 Komputerowe sieci
+\klasyfikacja{C. Organizacja systemow komputerow\\ C.2 Komputerowe sieci
 komunikacyjne\\ C.2.4 Systemy rozproszone}
 
 
 \klasyfikacjaang{C. Computer Systems Organization\\C.2 COMPUTER-COMMUNICATION NETWORKS \\
 C.2.4 Distributed systems}
 
-% Słowa kluczowe:
+% S??owa kluczowe:
 \keywords{systemy P2P}
 
 \keywordsang{P2P storage systems}
-% Tu jest dobre miejsce na Twoje własne makra i~środowiska:
+% Tu jest dobre miejsce na Twoje w??asne makra i~??rodowiska:
 \newtheorem{defi}{Definicja}[section]
 
 \SVN $Date$
@@ -100,10 +100,8 @@ C.2.4 Distributed systems}
 thesis} \newtheorem{observation}{Observation}[collective_ctr]
 \newtheorem{example}{Example}[chapter]
 
-\author{Bolesław Kulbabiński}
-
 \streszczenie{
-W pracy analizowany jest problem replikacji danych w systemach rozproszonych. Omówione są istniejące systemy oraz przedstawiony jest eksperymentalny system Nebulostore.}
+W pracy analizowany jest problem replikacji danych w systemach rozproszonych. Omowione sa istniejace systemy oraz przedstawiony jest eksperymentalny system Nebulostore.}
 
 \begin{document} \maketitle
 
@@ -283,7 +281,7 @@ Finally, Nebulostore follows the eventual consistency model ([VOG]) which implie
 
 \section{Architecture and components}
 
-\textcolor{red}{DIAGRAM - dispatcher, communication + job-moduły połączone kolejkami}\\
+\textcolor{red}{DIAGRAM - dispatcher, communication + job-moduly polaczone kolejkami}\\
 
 Nebulostore implements the actor model (LINK) where actors are represented internally as {\bf job modules} responsible for high-level functionalities of the system. Job modules are usually single-threaded state machines that are spawned and managed by the {\bf dispatcher} component. Dispatcher is also responsible for delivering messages between job modules. Incoming and outgoing network traffic is served by the {\bf communication} component. All network traffic between Nebulostore peers consists of serialized messages created and handled by job modules.\\
 
@@ -456,15 +454,15 @@ Another interesting deployment is presented in [HET]. A backup system similar to
 \bibitem[GOS]{gossiping} Jelasity M. et al \textit{Gossip-based Peer Sampling
 }
 
-\bibitem[HET]{heterogeneity} Skowron P., Rządca K. \textit{Exploring heterogeneity of unreliable machines for p2p backup}
+\bibitem[HET]{heterogeneity} Skowron P., Rzadca K. \textit{Exploring heterogeneity of unreliable machines for p2p backup}
 
-\bibitem[KAD]{kademlia} Maymounkov P., Mazières D. \textit{Kademlia: A Peer-to-peer Information System based on the XOR metric, New York University, 2001}
+\bibitem[KAD]{kademlia} Maymounkov P., Mazisres D. \textit{Kademlia: A Peer-to-peer Information System based on the XOR metric, New York University, 2001}
 
 \bibitem[KRZ]{rzadca} Rzadca K., Datta A., Buchegger S. \textit{Replica Placement in P2P Storage: Complexity and Game Theoretic Analyses}
 
 \bibitem[NAP]{napster} \textit{Measuring and analyzing the characteristics of Napster and Gnutella hosts, 2003}
 
-\bibitem[PSN]{peerson} Sonja Buchegger, Doris Schiöberg, Le Hung Vu, Anwitaman Datta. \textit{PeerSoN: P2P Social Networking - Early Experiences and Insights. In Proceedings of SocialNets 2009, The 2nd Workshop on Social Network Systems, Nuernberg, Germany, March 31, 2009}
+\bibitem[PSN]{peerson} Sonja Buchegger, Doris Schi??berg, Le Hung Vu, Anwitaman Datta. \textit{PeerSoN: P2P Social Networking - Early Experiences and Insights. In Proceedings of SocialNets 2009, The 2nd Workshop on Social Network Systems, Nuernberg, Germany, March 31, 2009}
 
 \bibitem[SET]{seti} Javadi, B. \textit{Discovering Statistical Models of Availability in Large Distributed Systems: An Empirical Study of SETI@home, 2011}
 
