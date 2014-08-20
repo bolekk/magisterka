@@ -310,22 +310,29 @@ Gossiping is used in Nebulostore to discover nodes that are best for establishin
 
 \chapter{Data replication}\label{chap:data_replication}
 
-In this chapter we analyse various approaches to data replication in peer-to-peer systems, categorized with respect to the degree of centralization. We begin with a discussion regarding the model of peers' availabilities. Afterwards, we present some of the existing results and also propose a new approach.\\
+In this chapter we analyze various approaches to data replication in peer-to-peer systems, categorized with respect to the degree of centralization. We begin with a discussion regarding the model of peers' availability. Afterwards, we present some of the existing results and also propose a new approach.\\
 
 \section{General assumptions}
 
-2. Kazdy replikuje te sama ilosc danych,
-4. Nikt nie klamie bo weryfikacja
+1. Kazdy replikuje wielokrotnosc jakiejs jednostki ilosci danych (w wiekszosci przypadkow wszyscy po tyle samo ale nie koniecznie)
 
-1. Kliki?, 3. Wszyscy sie znaja dzieki centralnemu serwerowi,? .\\
+2. Nikt nie zawyza bo weryfikacja\\
 
-- jaki max na stopien powielenia? jakis maly chyba\\
+3. Wszyscy sie znaja dzieki centralnemu serwerowi,? .\\
 
-\section{Availability model}
+Musimy miec miare dal calego systemu, ktora jest sprawiedliwa (paper).\\ Mamy tez miary dla peerow.\\
+
+*** gdzie napisac o klikach?
+
+\section{Availability models}
+
+\subsection{Probabilistic model}
 
 There exist at least two models of peers' availabilities --- the {\it probabilistic} model and the {\it time-slot} model ([KRZ] (LINK)). In the probabilistic model, each peer $p_i$ has a probability of being online and available for every moment in time $t$. This can be further simplified by assuming that the probability is constant over time thus associating with each peer $p_i$ only one real number $av(i) \in [0,1]$. This number is called the {\it probabilistic availability} of peer $p_i$.\\
 
-On the other hand, the time-slot model divides the time into discrete intervals of equal length and assumes that each peer has a cyclically-repeating pattern of being available or not during the whole interval. In this work, we focus only on the time-slot model. It seems to be more interesting from the theoretical point of view as it can be used to approximate the probabilistic model. If a peer is known to have the probabilistic availability of $90\%$, we can simulate it by assuming that it is available in 9 out of 10 intervals (chosen randomly) in the time-slot model. Moreover, this model is often equivalent to the patterns in which real machines are available. For instance, in large companies, desktop computers are occupied from 9 AM to 5 PM and idle during the rest of the day and night (from 24 one-hour slots only 8 are unavailable).\\
+\subsection{Time-slot model}
+
+On the other hand, the time-slot model divides time into discrete intervals of equal length and assumes that each peer has a cyclically-repeating pattern of being available or not during the whole interval. In this work, we focus only on the time-slot model. It seems to be more interesting from the theoretical point of view as it can be used to approximate the probabilistic model. If a peer is known to have the probabilistic availability of $90\%$, we can simulate it by assuming that it is available in 9 out of 10 intervals (chosen randomly) in the time-slot model. Moreover, this model is often equivalent to the patterns in which real machines are available. For instance, in large companies, desktop computers are occupied from 9 AM to 5 PM and idle during the rest of the day and night (from 24 one-hour slots only 8 are unavailable).\\
 
 Let us formalize the time-slot model.
 \begin{definition}
@@ -365,16 +372,17 @@ The resulting 3-coloring of $H$ can be directly mapped onto clique memberships. 
 
 \textcolor{red}{to podejscie jest zle bo duzy churn i trzeba by przeliczac na nowo, raczej nie chcemy psuc istniejacych klik, wolimy troche bardziej inkrementalnie}
 
-\section{Game-theoretic approach}
-
-(Not too long. Some examples of completely decentralized approach where we can show that equilibrium is not fair.)
-
-\section{Hybrid approach}
+\section{De-centralized approach}
 
 Nie chcemy centralizacji bo NP i trzeba przeliczac od nowa przy churnie i nie ma incentives zeby byc highly available i chcemy dac swobode peerom.\\
 Nie chcemy decentralizacji bo faworyzuje lepszych.\\
 
-W hybrydzie zakladamy, ze wszyscy wiedza o istniejacych peerach dzieki centralym metadanym. Nadal pozwalamy peerom na dowolne algorytmy dobierania sie. Kontrakty sa wzajemne.\\
+W hybrydzie zakladamy, ze wszyscy wiedza o istniejacych peerach dzieki centralym metadanym. Nadal pozwalamy peerom na dowolne algorytmy dobierania sie.\\
+
+Rezygnujemy z wzajemnosci.\\
+
+
+
 
 
 
