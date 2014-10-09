@@ -1,5 +1,9 @@
 package simulations;
 
-public abstract class Measure {
-	public abstract int measure(Peer a, Peer b);
+public interface Measure {
+
+  /**
+   * how well this replica fits the requester (from the systems' perspective)
+   */
+  long score(Peer replica, Peer requester);
 }

@@ -5,18 +5,18 @@ import java.util.List;
 public class MainSim {
 
   public static void main(String[] args) {
-    final int nPeers = 100;
+    final int nPeers = 40;
     final int T = 24;
     final int slots = 2;
-    Sim sim = new Sim(nPeers, T, new CoverMeasure(), slots);
-    sim.run(5);
+    Sim sim = new Sim(nPeers, T, new SumMeasure(), slots);
+    sim.run(100);
     List<Stat> results = sim.getResults();
     int globalStrength = 0;
     int sumOrig = 0;
     for (Stat s : results) {
-      globalStrength += s.av - s.peer.nAv;
-      sumOrig += s.peer.nAv;
-      System.out.print(s.av + "(" + s.peer.nAv + ") ");
+      globalStrength += s.av - s.peer.getOriginalTotalAv();
+      sumOrig += s.peer.getOriginalTotalAv();
+      System.out.print(s.av + "(" + s.peer.getOriginalTotalAv() + "; " + s.peer.getReplicas().size() + ") ");
     }
     System.out.println("\nSUM OF GAINS: " + globalStrength);
     System.out.println("ORIG: " + sumOrig);
