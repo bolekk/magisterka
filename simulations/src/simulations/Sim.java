@@ -49,10 +49,10 @@ public class Sim {
   }
 
   private class Elem implements Comparable<Elem> {
-    public Integer val;
+    public Long val;
     public Peer p;
     
-    public Elem(int val, Peer p) {
+    public Elem(long val, Peer p) {
       this.val = val;
       this.p = p;
     }

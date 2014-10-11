@@ -8,8 +8,7 @@ import java.util.Set;
 import com.google.common.base.Preconditions;
 
 public class Peer {
-  private static final int SHIFT = 1000;
-  
+
   private final int T;
   private final int uniqueId;
   private List<Boolean> av;
@@ -63,7 +62,7 @@ public class Peer {
       return p.toString();
     }
   }
-  
+
   public boolean request(Peer peerToReplicate) {
     if (peersIReplicate.size() < slots) {
       return true;
@@ -109,24 +108,23 @@ public class Peer {
   // my replicas
 
   // how good this peer is for us
-  public int score(Peer potentialReplica) {
-    //return basicScore(potentialReplica);
-    return realScore(potentialReplica);
+  public long score(Peer potentialReplica) {
+    return basicScore(potentialReplica);
+    //return measure.score(potentialReplica, this);
+    //return realScore(potentialReplica);
   }
-  
-  // how many can it ad to our original score
+
+  // how many can it ad to our current score
   public int basicScore(Peer potentialReplica) {
     int adds = 0;
-    int copies = 0;
     for (int i = 0; i < T; ++i) {
       if (potentialReplica.av.get(i)) {
-        if (sumAv.get(i)) ++copies;
-        else ++adds;
+        if (!sumAv.get(i)) ++adds;
       }
     }
-    return adds * SHIFT + (SHIFT - 1 - copies); 
+    return adds; 
   }
-  
+
   // how many can it add assuming we need to remove our weakest replica
   public int realScore(Peer potentialReplica) {
     Set<Peer> copy = new HashSet<Peer>(myReplicas);

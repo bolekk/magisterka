@@ -10,7 +10,7 @@ public class SumMeasure implements Measure {
   public long score(Peer replica, Peer requester) {
     long strength = requester.getOriginalTotalAv();
     long additional = 0;
-    for (int i = 0; i < replica.getSlotsNum(); ++i) {
+    for (int i = 0; i < replica.getAv().size(); ++i) {
       if (replica.getAv().get(i)) {
         if (!requester.getAv().get(i)) ++additional;
       }
