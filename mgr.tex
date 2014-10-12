@@ -310,11 +310,46 @@ Gossiping is used in Nebulostore to discover nodes that are best for establishin
 
 \chapter{Data replication}\label{chap:data_replication}
 
-In this chapter we analyze various approaches to data replication in peer-to-peer systems, categorized with respect to the degree of centralization. We begin with a discussion regarding the model of peers' availability. Afterwards, we present some of the existing results and also propose a new approach.\\
+In this chapter we analyse various approaches to data replication in peer-to-peer systems, categorized with respect to the degree of centralization. We begin with a discussion regarding the model of peers' availability. Afterwards, we present some of the existing results and also propose a new approach.\\
+
+\section{Availability model}
+
+There exist at least two models of peers' availabilities --- the {\it probabilistic} model and the {\it time-slot} model ([KRZ] (LINK)). We would like to provide necessary definitions and briefly discuss advantages and disadvantages of both models. Later we focus only on the time-slot model so existing results within the probabilistic model will be briefly presented in the following section.
+
+\subsection{Probabilistic model}
+
+% tylko omawiamy i krotko prezentujemy wyniki z KRZ wspominajac o klikach
+
+In the probabilistic model, each peer $p_i$ has a probability of being online and available for every moment in time $t$. This can be further simplified by assuming that the probability is constant over time thus associating with each peer $p_i$ only one real number.
+
+\begin{definition}
+The {\it probabilistic availability} of peer $p_i$ is a single real number $av(i) \in [0,1]$.
+\end{definition}
+
+One important implication of this definition is {\bf symmetry} i.e. if a given peer has probabilistic availability p, it will contribute exactly that amount to every other peer that it replicates, regardless of that other peer's characteristics.\\
+
+Because of such symmetry, authors of [KRZ] proposed a {\bf clique}-based data replication model. In this model, peers are divided into groups and every peer replicates data of every other member of its group. A number of arguments are given in favour of such approach but the most compelling are that firstly, the replication scheme is based on reciprocity and secondly, distribution of data can be simpler to perform.\\
+
+In can be proven that most centralized optimization problems based on cliques in the probabilistic model are NP-hard. On the other hand, fully decentralized approaches, where peers communicate with one another and group into replication cliques, usually lead to big imbalance and favouring strongest peers.\\
+
+\subsection{Time-slot model}
+
+% definicja i powody dla ktorych bedziemy sie zajmowac tylko tym
+
+On the other hand, the time-slot model divides time into discrete intervals of equal length and assumes that each peer has a cyclically-repeating pattern of being available or not during the whole interval.\\
+
+Let us formalize the time-slot model.
+\begin{definition}
+For a given positive number of time slots $T$, the time-slot model with $T$ time intervals consists of time period $\mathcal{T} = \{1,\ldots,T\}$ and the set of availabilities of peers $\{p_1,\ldots,p_n\}$, where the availability of peer $p_i$ is defined as $A_i\subseteq\mathcal{T}$.\\
+\end{definition}
+
+In this work, we focus only on the time-slot model. It seems to be more interesting from the theoretical point of view as it can be used to approximate the probabilistic model. If a peer is known to have the probabilistic availability of $90\%$, we can simulate it by assuming that it is available in 9 out of 10 intervals (chosen randomly) in the time-slot model. Moreover, this model is often equivalent to the patterns in which real machines are available. For instance, in large companies, desktop computers are occupied from 9 AM to 5 PM and idle during the rest of the day and night (from 24 one-hour slots only 8 are unavailable).\\
+
+We can observe that this model lacks the symmetry of the probabilistic model. Distribution of availability slots can lead to situations where peer A is worthless for peer B but very valuable for peer C.\\ (TODO: example, image)
 
 \section{General assumptions}
 
-1. Kazdy replikuje wielokrotnosc jakiejs jednostki ilosci danych (w wiekszosci przypadkow wszyscy po tyle samo ale nie koniecznie)
+1. Kazdy replikuje wielokrotnosc jakiejs jednostki ilosci danych (w wiekszosci przypadkow wszyscy po tyle samo ale nie koniecznie). Jesli ktos chce wiecej to moze miec kilka "tozsamosci".\\
 
 2. Nikt nie zawyza bo weryfikacja\\
 
@@ -322,26 +357,10 @@ In this chapter we analyze various approaches to data replication in peer-to-pee
 
 Musimy miec miare dal calego systemu, ktora jest sprawiedliwa (paper).\\ Mamy tez miary dla peerow.\\
 
-*** gdzie napisac o klikach?
-
-\section{Availability models}
-
-\subsection{Probabilistic model}
-
-There exist at least two models of peers' availabilities --- the {\it probabilistic} model and the {\it time-slot} model ([KRZ] (LINK)). In the probabilistic model, each peer $p_i$ has a probability of being online and available for every moment in time $t$. This can be further simplified by assuming that the probability is constant over time thus associating with each peer $p_i$ only one real number $av(i) \in [0,1]$. This number is called the {\it probabilistic availability} of peer $p_i$.\\
-
-\subsection{Time-slot model}
-
-On the other hand, the time-slot model divides time into discrete intervals of equal length and assumes that each peer has a cyclically-repeating pattern of being available or not during the whole interval. In this work, we focus only on the time-slot model. It seems to be more interesting from the theoretical point of view as it can be used to approximate the probabilistic model. If a peer is known to have the probabilistic availability of $90\%$, we can simulate it by assuming that it is available in 9 out of 10 intervals (chosen randomly) in the time-slot model. Moreover, this model is often equivalent to the patterns in which real machines are available. For instance, in large companies, desktop computers are occupied from 9 AM to 5 PM and idle during the rest of the day and night (from 24 one-hour slots only 8 are unavailable).\\
-
-Let us formalize the time-slot model.
-\begin{definition}
-For a given positive number of time slots $T$, the time-slot model with $T$ time intervals consists of time period $\mathcal{T} = \{1,\ldots,T\}$ and the set of availabilities of peers $\{p_1,\ldots,p_n\}$, where the availability of peer $p_i$ is defined as $A_i\subseteq\mathcal{T}$.\\
-\end{definition}
-
-Throughout this work, we will be grouping peers into replication cliques, in which every peer replicates data of every other member of the clique. We will be trying to optimize the partitioning into cliques with regards to various measures. A number of arguments in favour of such approach are given in [KRZ] but the most compelling are that firstly, the replication scheme is based on reciprocity and secondly, distribution of data can be simpler to perform.\\
  
 \section{Centralized approach}
+
+% najpierw kliki - FPR
 
 Let us begin with the definition of the most natural centralized replication problem according to [KRZ] together with a proof of its NP-completeness.\\
 
@@ -370,12 +389,19 @@ Conversely, let us assume that $H$ is 3-colorable. When a 3-coloring of graph $H
 The resulting 3-coloring of $H$ can be directly mapped onto clique memberships. It will result in 3 cliques, each of size exactly $|V(H)| / 3 = n$. Moreover, every clique will be complete because due to recoloring every time slot is covered by exactly three peers of pairwise different colors. Thus, we have shown that the solution to our instance of the FPR problem exists.
 \end{proof}
 
-\textcolor{red}{to podejscie jest zle bo duzy churn i trzeba by przeliczac na nowo, raczej nie chcemy psuc istniejacych klik, wolimy troche bardziej inkrementalnie}
+\textcolor{red}{to podejscie jest zle bo duzy churn i trzeba by przeliczac na nowo, raczej nie chcemy psuc istniejacych klik, wolimy troche bardziej inkrementalnie}\\
+
+\textcolor{red}{Poza tym nie musimy sie trzymac klik, jaki bylby wtedy problem i czy tez NP?}\\
 
 \section{De-centralized approach}
 
+Results presented in the previous section suggest a conclusion that centralized optimization approaches to the replication problem can be computationally-heavy and also impractical for a few other reasons. We would like to investigate a new, decentralized approach where peers communicate with one another and agree or disagree to replicate one another's data.\\
+
+Since the time-slot model is not symmetric with respect to relative peers' contributions, we will not be relying on the idea of clique-based replication. \\
+
+
 Nie chcemy centralizacji bo NP i trzeba przeliczac od nowa przy churnie i nie ma incentives zeby byc highly available i chcemy dac swobode peerom.\\
-Nie chcemy decentralizacji bo faworyzuje lepszych.\\
+Nie chcemy  pelnej decentralizacji bo faworyzuje lepszych.\\
 
 W hybrydzie zakladamy, ze wszyscy wiedza o istniejacych peerach dzieki centralym metadanym. Nadal pozwalamy peerom na dowolne algorytmy dobierania sie.\\
 
