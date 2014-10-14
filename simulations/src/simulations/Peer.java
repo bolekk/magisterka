@@ -14,6 +14,7 @@ public class Peer {
   private List<Boolean> av;
   private List<Boolean> sumAv; // my av + my replicas
   private int slots;
+
   private Measure measure;
   private Set<Peer> myReplicas;
   private Set<ReplicatedPeer> peersIReplicate;
@@ -109,12 +110,12 @@ public class Peer {
 
   // how good this peer is for us
   public long score(Peer potentialReplica) {
-    return basicScore(potentialReplica);
-    //return measure.score(potentialReplica, this);
+    return measure.score(potentialReplica, this);
+    //return basicScore(potentialReplica);
     //return realScore(potentialReplica);
   }
 
-  // how many can it ad to our current score
+  // how many points can it add to our current score
   public int basicScore(Peer potentialReplica) {
     int adds = 0;
     for (int i = 0; i < T; ++i) {
@@ -264,5 +265,9 @@ public class Peer {
   @Override
   public String toString() {
     return "Peer[" + uniqueId + "]";
+  }
+
+  public int getSlots() {
+    return slots;
   }
 }

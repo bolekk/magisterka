@@ -3,49 +3,29 @@ package simulations;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class Sim {
 
-  private final int DEF_SLOTS = 3;
-  private final int T;
-  private int nPeers;
+  private int iterCount;
   private List<Peer> peers;
-  private Random rand;
-  private Measure measure;
-  private int replicationSlots = DEF_SLOTS;
 
-  public Sim(int nPeers, int T, Measure measure, int replicationSlots) {
-    this.nPeers = nPeers;
-    this.T = T;
-    this.rand = new Random(122413);
-    this.measure = measure;
-    this.replicationSlots = replicationSlots;
-    init();
+  public Sim(List<Peer> peers) {
+    this.peers = peers;
+    this.iterCount = 0;
   }
 
-  private void init() {
-    peers = new ArrayList<>();
-    for (int i = 0; i < nPeers; ++i) {
-      peers.add(new Peer(i, T, getRandomAv(T, 8), replicationSlots, measure));
-    }
-  }
-
-  private List<Boolean> getRandomAv(int len, int expected) {
-    List<Boolean> ret = new ArrayList<>();
-    for (int i = 0; i < len; ++i) {
-      int nextInt = rand.nextInt(T);
-      ret.add(nextInt < expected);
-    }
-    return ret;
-  }
-
-  public void run(int iters) {
+  public int run(int iters, boolean stopOnNoChanges) {
     for (int i = 0; i < iters; ++i) {
+      iterCount++;
+      boolean changed = false;
       for (Peer p : peers) {
-        tryFindBetterReplica(p);
+        changed |= tryFindBetterReplica(p);
+      }
+      if (stopOnNoChanges && !changed) {
+        return iterCount;
       }
     }
+    return iterCount;
   }
 
   private class Elem implements Comparable<Elem> {
@@ -68,7 +48,9 @@ public class Sim {
     }
   }
 
-  private void tryFindBetterReplica(Peer peer) {
+  // sort and query according to peer.score()
+  private boolean tryFindBetterReplica(Peer peer) {
+    boolean changed = false;
     List<Elem> candidates = new ArrayList<>();
     for (Peer other : peers) {
       if (other == peer) continue;
@@ -79,19 +61,22 @@ public class Sim {
     for (Elem candidate : candidates) {
       if (peer.getReplicas().contains(candidate.p)) {
         mine++;
-        if (mine == peer.getReplicas().size()) {
-          break; // no need to ask worse peers than I already have
+        if (mine == peer.getSlots()) {
+          break; // no need to ask worse peers than I already have if I have no space
         } else {
           continue;
         }
       }
       if (candidate.p.request(peer)) {  // if candidate accepts our replication request
+        //System.out.println("ACC " + candidate.toString() + " " + peer.toString());
+        changed = true;
         peer.acceptedBy(candidate.p);
         candidate.p.replicate(peer);
         validateSymmetry();
         break;
       }
     }
+    return changed;
   }
 
   private void validateSymmetry() {
