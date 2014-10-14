@@ -266,8 +266,4 @@ public class Peer {
   public String toString() {
     return "Peer[" + uniqueId + "]";
   }
-
-  public int getSlots() {
-    return slots;
-  }
 }

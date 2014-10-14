@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainSim {
+public class Main {
 
   private static Random rand = new Random(122413);
   
   public static void main(String[] args) {
-    final int nPeers = 2000;
+    final int nPeers = 500;
     final int T = 24;
     final int slots = 2;
-    final int iters = 100;
+    final int maxIters = 50;
 
     List<Peer> peers = initPeers(nPeers, T, slots, new SumMeasure());
-    Sim sim = new Sim(peers);
+    //Sim sim = new RandomSim(peers);
+    Sim sim = new GameSim(peers);
 
-    int effectiveIters = sim.run(iters, true);
+    int effectiveIters = sim.run(maxIters, true);
     System.out.println("EFFECTIVE ITERS = " + effectiveIters);
 
     List<Stat> results = sim.getResults();
@@ -42,7 +43,7 @@ public class MainSim {
     System.out.println("PERCENT OF GROWTH: " + (double)(globalStrength) / (nPeers * T - sumOrig));
     System.out.println("PERCENT OF COVER: " + (double)(globalStrength + sumOrig) / (nPeers * T));
   }
-  
+
 
   private static List<Peer> initPeers(int nPeers, int T, int slots, Measure measure) {
     List<Peer> peers = new ArrayList<>();
@@ -51,7 +52,7 @@ public class MainSim {
     }
     return peers;
   }
-  
+
   private static List<Boolean> getRandomAv(int len, int expected) {
     List<Boolean> ret = new ArrayList<>();
     for (int i = 0; i < len; ++i) {
@@ -60,5 +61,4 @@ public class MainSim {
     }
     return ret;
   }
-
 }
