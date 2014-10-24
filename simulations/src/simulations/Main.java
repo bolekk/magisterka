@@ -6,13 +6,14 @@ public class Main {
 
   public static void main(String[] args) {
     final int nPeers = 500;
-    final int T = 24;
-    final int slots = 3;
+    final int timeSlots = 24;
+    final int replicationSlots = 3;
     final int maxIters = 50;
+    
     final int expectedCoverage = 6;
     final PeerFactory peerFactory = new RandomizedPeerFactory(expectedCoverage);
-    List<Peer> peers = peerFactory.generatePeers(nPeers, T, slots, new SumMeasure());
-
+    
+    List<Peer> peers = peerFactory.generatePeers(nPeers, timeSlots, replicationSlots, new SumMeasure());
     //Sim sim = new RandomSim(peers);
     Sim sim = new GameSim(peers);
 
@@ -33,12 +34,12 @@ public class Main {
     }
     System.out.println("\n");
     System.out.println("NUMBER OF PEERS: " + nPeers);
-    System.out.println("TOTAL NUMBER OF SLOTS: " + nPeers * slots);
+    System.out.println("TOTAL NUMBER OF SLOTS: " + nPeers * replicationSlots);
     System.out.println("TOTAL USED SLOTS: " + usedSlots);
     System.out.println("ORIG: " + sumOrig);
     System.out.println("SUM OF GAINS: " + globalStrength);
-    System.out.println("?OPTIMAL: " + nPeers * T);
-    System.out.println("PERCENT OF GROWTH: " + (double)(globalStrength) / (nPeers * T - sumOrig));
-    System.out.println("PERCENT OF COVER: " + (double)(globalStrength + sumOrig) / (nPeers * T));
+    System.out.println("?OPTIMAL: " + nPeers * timeSlots);
+    System.out.println("PERCENT OF GROWTH: " + (double)(globalStrength) / (nPeers * timeSlots - sumOrig));
+    System.out.println("PERCENT OF COVER: " + (double)(globalStrength + sumOrig) / (nPeers * timeSlots));
   }
 }
