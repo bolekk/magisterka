@@ -287,7 +287,7 @@ Nebulostore implements the actor model (LINK) where actors are represented inter
 
 The communication component of Nebulostore is responsible for sending messages over TCP/IP connections between peers. Another task is to manage metadata including, but not limited to persistent addresses conversion and replication contracts. Depending on configuration, metadata can be stored centrally, in a database instance running on a designated and globally-known host. Alternatively, it can be stored in a DHT created within the existing Nebulostore network. Communication component offers a custom implementation of Kademlia ([KAD]) DHT. Moreover, this component manages the overlay network of peers and provides discovery information to other modules. Peer discovery is realized via gossiping ([GOS]). In particular, Nebulostore provides an implementation of T-Man gossiping protocol ([TMN]).\\
 
-Another important component is the {\bf broker}, which task is to offer replication contracts and reply to such offers. Broker's goal is to optimize the availability of its owner's files by selecting the best replication groups according to a given logic. Various approaches and algorithms for replication agreements are discussed in chapter 3.\\
+Another important component is the {\bf broker}, which task is to offer replication contracts and reply to such offers. Broker's goal is to optimize the availability of its owner's files by selecting the best replication groups according to a given logic. Various approaches and algorithms for replication agreements are discussed in Chapter 3.\\
 
 One of the modules is responsible for file resolution process, which works as follows. The owner's AppKey is used to fetch her metadata, including contract information. ObjectId is used to extract the list of peers currently replicating the file. A few peers are queried in parallel and one of those who reply is asked to send the file. If the file consists of many chunks, they are fetched lazily, depending on the actual API call.\\
 
@@ -316,7 +316,7 @@ In this chapter we analyse various approaches to data replication in peer-to-pee
 
 We would like to make a few assumptions about our system that are going to be used throughout this work.\\
 
-{\bf Uniformity.} Every peer has the same amount of data that needs to be replicated. Moreover, every peer is able to replicate data of at most K other peers. Finally, every peer always stores its own data (i.e. works as a replica for itself).\\
+{\bf Uniformity.} Every peer has the same amount of data that needs to be replicated. Moreover, every peer is able to replicate data of at most K other peers (K is a system-wide constant). Finally, every peer always stores its own data (i.e. works as a replica for itself).\\
 This assumption lets us focus only on peers' availabilities as a single parameter. In case a real user needs to replicate more data, it can have multiple identities in the system.\\
 
 {\bf Truthfulness.} No peer advertises false availability.\\
@@ -324,10 +324,15 @@ It is relatively easy for the system to verify if a peer is actually available i
 
 {\bf Openness.} Everyone knows all peers existing in the system. We assume existence of a centralized login server, where every member of the system registers itself and can poll the server for information about peers with required availabilities.\\
 
-Regardless of the availability model and other assumptions, we need a {\bf system measure} to evaluate the state of the system from the creator's perspective.\\
+Regardless of the availability model and other assumptions, we need a {\bf system measure} to evaluate the state of the system from the creator's perspective. Our goal is to maximize data availability, which is easily expressed by a simple measure defined below.
 
-MIARA SPRAWIEDLIWA? (PAPER) SUMA?\\
+\begin{definition}
+The {\it basic system measure (BSM)} is a sum of total data availabilities over all peers in the system.\\
+\end{definition}
 
+Peer's data availability is a combination of its own availability and its current replicas' availabilities. Details are discussed later in the models' section.
+
+\textcolor{red}{Tutaj jeszcze dodam propozycje bardziej sprawiedliwych miar zgodnie z praca equitable aggregations}\\
 
 \section{Availability model}
 
@@ -343,13 +348,13 @@ In the probabilistic model, each peer $p_i$ has a probability of being online an
 The {\it probabilistic availability} of peer $p_i$ is a single real number $av(i) \in [0,1]$.
 \end{definition}
 
-One important implication of this definition is {\bf symmetry} i.e. if a given peer has probabilistic availability p, it will contribute exactly that amount to every other peer that it replicates, regardless of that other peer's characteristics.\\
+One important implication of this definition is {\bf symmetry} i.e. if a given peer has probabilistic availability p, it will contribute exactly that amount to every other peer that it replicates, regardless of the other peer's characteristics.\\
 
 Because of such symmetry, authors of [KRZ] proposed a {\bf clique}-based data replication model. In this model, peers are divided into groups and every peer replicates data of every other member of its group. A number of arguments are given in favour of such approach but the most compelling are that firstly, the replication scheme is based on reciprocity and secondly, distribution of data can be simpler to perform.\\
 
 In can be proven that most centralized optimization problems based on cliques in the probabilistic model are NP-hard. On the other hand, fully decentralized approaches, where peers communicate with one another and group into replication cliques, usually lead to big imbalance and favouring strongest peers [KRZ].\\
 
-MIARA - tutaj prosta\\
+Data availability of a single peer $p_1$ belonging to a replication clique $\{p_{1}, p_{2}, \ldots, p_{k}\}$ is equal to the probability of at least one of the peers from the group being online.\\
 
 \subsection{Time-slot model}
 
@@ -364,9 +369,13 @@ For a given positive number of time slots $T$, the time-slot model with $T$ time
 
 In this work, we focus only on the time-slot model. It seems to be more interesting from the theoretical point of view as it can be used to approximate the probabilistic model. For example, if a peer is known to have the probabilistic availability of $90\%$, we can simulate it by assuming that it is available in 9 out of 10 intervals (chosen randomly) in the time-slot model. Moreover, this model is often equivalent to the patterns in which real machines are available. For instance, in large companies, desktop computers are occupied from 9 AM to 5 PM and idle during the rest of the day and night (from 24 one-hour slots only 8 are unavailable).\\
 
-We can observe that this model lacks the symmetry of the probabilistic model. Some arrangements of availability slots can lead to situations where peer A is worthless for peer B but very valuable for peer C.\\ (TODO: example, image)\\
+We can observe that this model lacks the symmetry of the probabilistic model. Some arrangements of availability slots can lead to situations where peer A is worthless for peer B but very valuable for peer C.\\
 
-MIARA - tu moze byc zlozona bo jednostronna
+\textcolor{red}{TODO obrazek - peer A zawiera sie w B ale z C ma tylko jeden punkt wspolny}\\
+
+Because of this lack of symmetry, we no longer require peers to form reciprocal cliques. Instead, every peer finds its own replicas independently.\\
+
+Data availability of a single peer $p_1$ whose data is additionally replicated by peers $\{p_{2}, p_{3}, \ldots, p_{k}\}$ is equal to the sum of all time-slots that are covered by at least one of the peers  $p_1, \ldots, p_k$.\\
  
 \section{Centralized approach}
 
@@ -399,9 +408,7 @@ Conversely, let us assume that $H$ is 3-colorable. When a 3-coloring of graph $H
 The resulting 3-coloring of $H$ can be directly mapped onto clique memberships. It will result in 3 cliques, each of size exactly $|V(H)| / 3 = n$. Moreover, every clique will be complete because due to recoloring every time slot is covered by exactly three peers of pairwise different colors. Thus, we have shown that the solution to our instance of the FPR problem exists.
 \end{proof}
 
-\textcolor{red}{to podejscie jest zle bo duzy churn i trzeba by przeliczac na nowo, raczej nie chcemy psuc istniejacych klik, wolimy troche bardziej inkrementalnie}\\
-
-\textcolor{red}{Poza tym nie musimy sie trzymac klik, jaki bylby wtedy problem i czy tez NP?}\\
+\textcolor{red}{TODO: problem scentralizowany wraz z jakimkolwiek rozwiazaniem dla modelu time-slot}\\
 
 \section{De-centralized approach}
 
@@ -409,28 +416,43 @@ Results presented in the previous section suggest a conclusion that centralized 
 
 We would like to investigate a new, decentralized approach where peers communicate with one another and agree or disagree to replicate one another's data. Authors of [KRZ] proposed a completely de-centralized game between peers that works as follows. Game consists of rounds. In each round, every peer enquires another peer of its choice to replicate its data (proposes a {\it replication contract}). In the subsequent round every peer answers to a contract proposal (either accepts or rejects) and may also withdraw some of the existing contracts. If the measures are chosen wisely, the whole game reaches an equilibrium.\\
 
-Since the time-slot model is not symmetric with respect to relative peers' contributions, we will not be relying on the idea of clique-based replication. Instead, every peer will ask other peers to replicate its data based on some measure of its choice. We do not require that if peer A replicates B's data, B has to replicate A's data. Thus, peers do not care whose data they replicate, their only concern is who is replicating their data. In such situation, the logic of selecting peers that a peer will replicate can be imposed by the system and uniform for every peer. It is worth noting that control over peers following that imposed logic is fairly easy to implement as all the replication contracts may be public and registered in the central node.\\
+Since the time-slot model is not symmetric with respect to relative peers' contributions, we will not be relying on the idea of clique-based replication. Instead, every peer will ask other peers to replicate its data based on some measure of its choice. We do not require that if peer A replicates B's data, B has to replicate A's data. Thus, peers do not care whose data they replicate, their only concern is who is replicating their data. In such situation, the logic of selecting peers that a given peer will replicate can be imposed by the system and uniform for every peer. It is worth noting that control over peers following that imposed logic is fairly easy to implement as all the replication contracts may be public and registered in the central node.\\
 
 Let us emphasise the distinction between the two above-mentioned measures.
 
 \begin{definition}
-The {\bf acceptance} measure is the measure used by a peer to rank other peers asking for data replication and select exactly K of them, where K is the number of replication slots. The acceptance measure is imposed by the system and peers are obliged to use it.
+The {\bf acceptance} measure (AM) is the measure used by a peer to rank other peers asking for data replication and select exactly K of them, where K is the number of replication slots. The acceptance measure is imposed by the system and peers are obliged to use it.
 \end{definition}
 
 \begin{definition}
-The {\bf seeker} measures are all the measures used by peers to select potential replicators of their data and issue a replication request to them. Only if a replicator decides that the querying peer is among K best peers according to acceptance measure, the data will be replicated. Every peer can use any seeker measure it prefers.\\
+The {\bf private} measures (PM) are all the measures used by peers to select potential replicators of their data and issue a replication request to them. Only if a replicator decides that the querying peer is among K best peers according to acceptance measure, the data will be replicated. Every peer can use any seeker measure it prefers.\\
 \end{definition}
 
-Manipulating the acceptance measure is a way to shift the equilibrium towards either better or worse peers. Let us analyse two simple examples.\\
+\textcolor{red}{TODO: chce zaargumentowac, ze private measures nie maja za bardzo wplywu na to jak bedzie wygladal uklad replikatorow po osiagnieciu rownowagi. Wydaje mi sie ze argument moze byc mniej-wiecej taki, ze gdyby wszyscy caly czas pytali wszystkich innych o replikacje to po dostatecznie duzej liczbie rund i tak by wyszlo na to co mowi acceptance measure. Nie udalo mi sie tego na razie sformalizowac}\\
+
+We are interested in analysing only the acceptance measure, which is the key factor of system's performance. Manipulating the acceptance measure is a way to shift the equilibrium in favour of either better or worse peers. Let us analyse a few simple examples.\\
 
 % chyba nie jest jasne jaki to "stronger" peer - zdefiniuj strength przy definicjach modeli
 
-Let us assume for a moment that the system measure is chosen to be equal to the sum of time-slots covered by the requester. This way clearly favours stronger peers as they will be always accepted by the replicators if competing with weaker ones.\\
+{\bf Example \#1}\\
+Let us assume for a moment that the acceptance measure is chosen to be equal to the sum of time-slots covered by the requester.
+$$PM(p_i) = |A_i|$$
+This way clearly favours stronger peers as they will be always accepted by the replicators if competing with weaker ones.\\
 
-On the other hand, let us think of a system measure being equal to the amount of slots that a replicator will add to what the requester is already covering. Such solution will favour the weaker peers. Thus, stronger peers lose incentives to be strong.\\
+{\bf Example \#2}\\
+On the other hand, let us think of a system measure being equal to the amount of slots that a replicator will add to what the requester is already covering.
+$$PM(p_i) = |A_r \cap A_i|$$
+where $A_r$ is replicators availability.
+Such solution will favour weaker peers. Thus, stronger peers lose incentives to be strong and might try to lower their advertised availability in order to get better replicas from the system.\\
 
-We can see that both of these measures lead to some imbalance in the system. That is why we will try using hybrids of the above-mentioned measures. (SUM)\\
+We can see that both of these measures lead to some imbalance in the system. That is why we will try using hybrids of the above-mentioned measures.\\
 
+{\bf Example \#3}\\
+One of such hybrids is a simple sum of the measures from examples 1 and 2.
+$$PM(p_i) = |A_i| + |A_r \cap A_i|$$
+This measure does not have the disadvantage from example 2. Peers have no incentives to lower their availability because their gain can be at most zero. Also the whole system is not biased towards the best peers.\\
+
+\textcolor{red}{TODO: tutaj wstawie rysunek podobny do tego, ktory narysowalem na tablicy i powiem o liniowych kombinacjach dwoch powyzszych skladnikow w mierze. Musze tez jeszcze rozwazyc nieliniowe kombinacje.}\\
 %
 %
 %  ----------- CHAPTER 4 -----------------------------------------------
@@ -483,6 +505,7 @@ Another interesting deployment is presented in [HET]. A backup system similar to
 %Other notes and ideas
 %http://en.wikipedia.org/wiki/CAP_theorem
 
+\chapter{Summary and Conclusions}\label{chap:conclusions}
 
 
 %
