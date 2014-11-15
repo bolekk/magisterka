@@ -31,4 +31,9 @@ public class RandomizedPeerFactory implements PeerFactory {
     return ret;
   }
 
+  @Override
+  public String getName() {
+    return "Uniform";
+  }
+
 }
