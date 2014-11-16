@@ -391,14 +391,14 @@ In the time-slot model, data availability of a single peer $p_1$ whose data is a
 
 % najpierw kliki - FPR
 
-Let us begin with the definition of the most natural centralized replication problem according to [KRZ] together with a proof of its NP-completeness.\\
+Let us begin with an optimization problem proposed by [KRZ] together with a proof of its NP-completeness.\\
 
-An instance of the {\it Fair Peer Replication} (FPR) problem consists of the set of peers $\{p_1,\ldots,p_n\}$ in a time-slot model with $T$ intervals. The optimization goal is to assign each peer to a clique, such that all the cliques are complete $(\forall G_k:A_{G_k} = \mathcal{T})$ and the size of the largest clique is minimized ($\min\max(|G_1|,\ldots,|G_N|)$).\\
+An instance of the {\bf Fair Peer Replication} (FPR) problem consists of the set of peers $\{p_1,\ldots,p_n\}$ in a time-slot model with $T$ intervals. The optimization goal is to assign each peer to a clique, such that all the cliques are complete $(\forall G_k:A_{G_k} = \mathcal{T})$ and the size of the largest clique is minimized ($\min\max(|G_1|,\ldots,|G_N|)$).\\
 
 The decision version of FPR is as follows. Given the set of peers' availabilities $\{A_i\}$, is it possible to assign each peer to exactly one clique such that all the cliques are complete and the size of the largest clique is at most $n$.
 
 \begin{theorem}
-FPR is NP-complete.
+FPR is NP-hard.
 \end{theorem}
 \begin{proof}
 
@@ -418,10 +418,11 @@ Conversely, let us assume that $H$ is 3-colorable. When a 3-coloring of graph $H
 The resulting 3-coloring of $H$ can be directly mapped onto clique memberships. It will result in 3 cliques, each of size exactly $|V(H)| / 3 = n$. Moreover, every clique will be complete because due to recoloring every time slot is covered by exactly three peers of pairwise different colors. Thus, we have shown that the solution to our instance of the FPR problem exists.
 \end{proof}
 
-\textcolor{red}{TODO: dwa inne problemy NP?}\\
+The FPR problem aims at achieving a state with perfect availability and minimizes the replication overhead. In real systems, perfect availability might be impossible to achieve within reasonable disk space limits. Moreover, we already argued that in the time-slot model, clique-based replication is not necessarily desirable. That is why we propose a different optimization problem.\\
 
-% INNY LEPSZY PROBLEM (wciaz kliki): ustalony staly max rozmiar kliki i max jakiejs miary pokrycia (sume? sume kwadratow?)
-% Jeszcze inny DLA TIME-SLOT: Nie ma klik, dobieramy kazdemu gosciowi K innych i max miary.
+An instance of the {\bf Uniform Peer Replication} (UPR) problem consists of the set of peers $\{p_1,\ldots,p_n\}$ in a time-slot model with $T$ intervals. Each peer has exactly $K$ replication slots available. The optimization goal is to assign exactly $K$ peers (replicas) to every peer so that each peer replicates exactly $K$ other peers and the sum of all resulting availabilities is maximized.\\
+
+\textcolor{red}{TODO: podobny do 3-dimensinal assignment}
 
 \section{De-centralized approach}
 
