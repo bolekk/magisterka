@@ -78,9 +78,9 @@ komunikacyjne\\ C.2.4 Systemy rozproszone}
 C.2.4 Distributed systems}
 
 % S??owa kluczowe:
-\keywords{systemy P2P}
+\keywords{systemy P2P, systemy rozproszone, replikacja danych, DHT, backup}
 
-\keywordsang{P2P storage systems}
+\keywordsang{P2P storage systems, distributed systems, data replication, DHT, backup, resource management}
 % Tu jest dobre miejsce na Twoje w??asne makra i~??rodowiska:
 \newtheorem{defi}{Definicja}[section]
 
@@ -109,6 +109,8 @@ W pracy analizowany jest problem replikacji danych w systemach rozproszonych. Om
 In this thesis I analyze the problem of data replication in peer-to-peer storage systems. I present exisiting distributed systems and a new, experimental system Nebulostore.
 \end{abstract}
 
+% mayfield handbook of technical writing
+
 \tableofcontents
 
 % praca jest o replikacji danych w systemach storage'owych
@@ -120,11 +122,11 @@ In this thesis I analyze the problem of data replication in peer-to-peer storage
 \chapter*{Introduction}\label{chap::introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
-Distributed storage systems are designed to overcome limitations of traditional, centralized data stores.
+Distributed storage systems are designed to overcome limitations of traditional, organizationally centralized data stores.
 Almost all of presently-used solutions work under the assumption that a single entity controls all the machines. This may lead to some concerns regarding privacy or data ownership, especially when the owner of the system offers storage services to independent customers.
 A different approach is to make the system open to the public by allowing any machine to join and become a node capable of storing data. In exchange, such participant is able to store her own data and even receive some service level guarantees.\\
 
-In this paper we present NebuloStore (www.nebulostore.org) --- an experimental implementation of a peer-to-peer storage system, based on mutual agreements (contracts) between participants. We will mostly focus on the problem of establishing these replication contracts in a manner that leads to a stable environment under certain assumptions.
+In this thesis we present NebuloStore (www.nebulostore.org) --- an experimental implementation of a peer-to-peer storage system, based on mutual agreements (contracts) between participants. We will mostly focus on the problem of establishing these replication contracts in a manner that leads to a stable environment under certain assumptions.
 We will analyze a few methods of clustering peers into replication groups, ranging from centralized algorithmic problems, most of which are computationally hard, to a completely decentralized game between nodes, which, on the other hand, does not lead to globally-optimal outcomes.
 
 
@@ -458,7 +460,7 @@ The {\bf acceptance} measure (AM) is the peer measure used by a peer to rank oth
 The {\bf private} measures (PM) are all the peer measures used by peers to select potential replicators of their data and issue a replication request to them. Only if a replicator decides that the querying peer is among K best peers according to acceptance measure, the data will be replicated. Every peer can use any seeker measure it prefers.\\
 \end{definition}
 
-We claim that as the system evolves, private measures lose their significance.
+We claim that as the system evolves over time, private measures lose their significance.
 
 \textcolor{red}{TODO: chce zaargumentowac, ze private measures nie maja za bardzo wplywu na to jak bedzie wygladal uklad replikatorow po osiagnieciu rownowagi. Wydaje mi sie ze argument moze byc mniej-wiecej taki, ze gdyby wszyscy caly czas pytali wszystkich innych o replikacje to po dostatecznie duzej liczbie rund i tak by wyszlo na to co mowi acceptance measure. Nie udalo mi sie tego na razie sformalizowac}\\
 
@@ -486,6 +488,8 @@ This measure does not have the disadvantage from example 2. Peers have no incent
 
 \textcolor{red}{TODO: tutaj wstawie rysunek podobny do tego, ktory narysowalem na tablicy i powiem o liniowych kombinacjach dwoch powyzszych skladnikow w mierze. Musze tez jeszcze rozwazyc nieliniowe kombinacje.}\\
 
+% Przyklad, ze miary zalezne od sytuacji prowadza do cyklu
+
 %
 %
 %  ----------- CHAPTER 4 -----------------------------------------------
@@ -495,7 +499,7 @@ This measure does not have the disadvantage from example 2. Peers have no incent
 \chapter{Experiments}\label{chap:experiments}
 
 Last chapter of this work is devoted to analysing outcomes of the simulations and real-life deployments of Nebulostore with various replicating strategies that we discussed in chapter 3.
-Before conducting any experiments, we need to know what are the expected peers' capabilities in terms of disk space and availability. When it comes to disk space, authors of [FAR] suggest that disk capacities are increasing faster than storage needs. Since in early 2000s estimated percentage of unused disk space on an average corporate workstation was above 50\%, we can safely assume that space requirements for data replication are easily fulfilled.
+Before conducting any experiments, we need to know what are the expected peers' capabilities in terms of disk space and availability. When it comes to disk space, authors of [FAR] suggest that disk capacities are increasing faster than storage needs. Since in early 2000s estimated percentage of unused disk space on an average corporate workstation was above 50\%, we can safely assume that space requirements for data replication are easily fulfilled. \textcolor{red}{TODO czy jest sens pisac o early 2000s?}
 On the other hand, peer availability is a more complex issue, which we need to research more thoroughly before formulating any assumptions. \\
 
 \section{Peer behaviour in real systems}

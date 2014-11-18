@@ -7,7 +7,7 @@ public class Main {
 
   private static final int nPeers = 1000;
   private static final int timeSlots = 24;
-  private static final int replicationSlots = 1;
+  private static final int replicationSlots = 4;
   private static final int maxIters = 50;
 
 
@@ -15,8 +15,9 @@ public class Main {
   public static void main(String[] args) {
     List<PeerFactory> factories = new ArrayList<>();    
     final int expectedCoverage = 18;
-    factories.add(new RandomizedPeerFactory(expectedCoverage));
+    //factories.add(new RandomizedPeerFactory(expectedCoverage));
     //factories.add(new NapsterPeerFactory());
+    factories.add(new KrzPeerFactory());
 
     List<Measure> measures = new ArrayList<>();
     measures.add(new PureWeaknessMeasure());
