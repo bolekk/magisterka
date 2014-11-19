@@ -5,19 +5,21 @@ import java.util.List;
 
 public class Main {
 
-  private static final int nPeers = 1000;
+  private static final int nPeers = 500;
   private static final int timeSlots = 24;
-  private static final int replicationSlots = 4;
-  private static final int maxIters = 50;
+  private static final int replicationSlots = 2;
+  private static final int maxIters = 30;
 
 
 
   public static void main(String[] args) {
     List<PeerFactory> factories = new ArrayList<>();    
-    final int expectedCoverage = 18;
+    final int expectedCoverage = 8;
     //factories.add(new RandomizedPeerFactory(expectedCoverage));
     //factories.add(new NapsterPeerFactory());
     factories.add(new KrzPeerFactory());
+    
+    Measure privateMeasure = new SelfishPrivateMeasure();
 
     List<Measure> measures = new ArrayList<>();
     measures.add(new PureWeaknessMeasure());
@@ -29,12 +31,12 @@ public class Main {
     for (PeerFactory factory : factories) {
       // games
       for (Measure measure : measures) {
-        List<Peer> peers = factory.generatePeers(nPeers, timeSlots, replicationSlots, measure);
+        List<Peer> peers = factory.generatePeers(nPeers, timeSlots, replicationSlots, privateMeasure, measure);
         Sim sim = new GameSim(peers);
         runAndPrint(factory.getName(), measure.getName(), sim);
       }
       // random (measure irrelevant)
-      List<Peer> peers = factory.generatePeers(nPeers, timeSlots, replicationSlots, new SumMeasure()); 
+      List<Peer> peers = factory.generatePeers(nPeers, timeSlots, replicationSlots, new SumMeasure(), new SumMeasure()); 
       Sim sim = new RandomSim(peers);
       runAndPrint(factory.getName(), "Random", sim);
     }

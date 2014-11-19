@@ -11,19 +11,19 @@ public class NapsterPeerFactory implements PeerFactory {
   private double worstFraction = 0.5;
 
   @Override
-  public List<Peer> generatePeers(int nPeers, int T, int slots, Measure measure) {
+  public List<Peer> generatePeers(int nPeers, int T, int slots, Measure privateMeasure, Measure acceptanceMeasure) {
     List<Peer> peers = new ArrayList<>();
     int nBest = (int)(nPeers * bestFraction);
     int nWorst = (int)(nPeers * worstFraction);
     
     for (int i = 0; i < nBest; ++i) {
-      peers.add(new Peer(i, T, getRandomAv(T, (int)(T * 0.85)), slots, measure));
+      peers.add(new Peer(i, T, getRandomAv(T, (int)(T * 0.85)), slots, privateMeasure, acceptanceMeasure));
     }
     for (int i = nBest; i < nBest + nWorst; ++i) {
-      peers.add(new Peer(i, T, getSingleAv(T), slots, measure));
+      peers.add(new Peer(i, T, getSingleAv(T), slots, privateMeasure, acceptanceMeasure));
     }
     for (int i = nBest + nWorst; i < nPeers; ++i) {
-      peers.add(new Peer(i, T, getRandomAv(T, T/10), slots, measure));
+      peers.add(new Peer(i, T, getRandomAv(T, T/10), slots, privateMeasure, acceptanceMeasure));
     }
     return peers;
   }

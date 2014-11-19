@@ -15,14 +15,16 @@ public class Peer {
   private List<Boolean> sumAv; // my av + my replicas
   private int slots;
 
-  private Measure measure;
+  private Measure privateMeasure;
+  private Measure acceptanceMeasure;
   private Set<Peer> myReplicas;
   private Set<ReplicatedPeer> peersIReplicate;
   private long weakestScore;
 
-  public Peer(int uniqueId, int T, List<Boolean> av, int slots, Measure measure) {
+  public Peer(int uniqueId, int T, List<Boolean> av, int slots, Measure privateMeasure, Measure acceptanceMeasure) {
     this.uniqueId = uniqueId;
-    this.measure = measure;
+    this.privateMeasure = privateMeasure;
+    this.acceptanceMeasure = acceptanceMeasure;
     this.T = T;
     this.av = av;
     this.sumAv = new ArrayList<>(av);
@@ -69,7 +71,7 @@ public class Peer {
       return true;
     } else {
       recalculateScores();
-      long peerScore = measure.score(this, peerToReplicate);
+      long peerScore = acceptanceMeasure.score(this, peerToReplicate);
       return peerScore > weakestScore;
     }
   }
@@ -84,7 +86,7 @@ public class Peer {
   private void recalculateScores() {
     weakestScore = -1;
     for (ReplicatedPeer repPeer : peersIReplicate) {
-      repPeer.score = measure.score(this, repPeer.p);
+      repPeer.score = acceptanceMeasure.score(this, repPeer.p);
       if (weakestScore == -1) weakestScore = repPeer.score;
       else weakestScore = Math.min(weakestScore, repPeer.score);
     }
@@ -110,7 +112,7 @@ public class Peer {
 
   // how good this peer is for us
   public long score(Peer potentialReplica) {
-    return measure.score(potentialReplica, this);
+    return privateMeasure.score(potentialReplica, this);
     //return basicScore(potentialReplica);
     //return realScore(potentialReplica);
   }
