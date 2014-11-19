@@ -1,21 +1,88 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{16}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[Abraham et~al.(2006)Abraham, Bir{\'o}, and Manlove]{abraham2006almost}
-D.~Abraham, P.~Bir{\'o}, and D.~Manlove.
-\newblock “almost stable” matchings in the roommates problem.
-\newblock \emph{Approximation and online algorithms}, pages 1--14, 2006.
+\bibitem[sky()]{skype}
+Skype official web page.
+\newblock \url{http://www.skype.com}.
 
-\bibitem[Zhao et~al.(2004)Zhao, Huang, Stribling, Rhea, Joseph, and
-  Kubiatowicz]{zhao2004tapestry}
-B.Y. Zhao, L.~Huang, J.~Stribling, S.C. Rhea, A.D. Joseph, and J.D.
-  Kubiatowicz.
-\newblock Tapestry: A resilient global-scale overlay for service deployment.
-\newblock \emph{Selected Areas in Communications, IEEE Journal on}, 22\penalty0
-  (1):\penalty0 41--53, 2004.
+\bibitem[spa()]{space_monkey}
+Space monkey official web page.
+\newblock \url{http://www.spacemonkey.com}.
+
+\bibitem[spo()]{spotify}
+Spotify official web page.
+\newblock \url{http://www.spotify.com}.
+
+\bibitem[Anderson(2006)]{storage}
+D.~Anderson.
+\newblock The computational and storage potential of volunteer computing.
+\newblock 2006.
+
+\bibitem[Buchegger et~al.(2009)Buchegger, Schiberg, Vu, and Datta]{peerson}
+Sonja Buchegger, Doris Schiberg, Le~Hung Vu, and Anwitaman Datta.
+\newblock Peerson: P2p social networking - early experiences and insights.
+\newblock In \emph{SocialNets 2009}, 2009.
+
+\bibitem[et~al(2010)]{edonkey}
+Le~Blond et~al.
+\newblock Choosing partners based on availability in p2p networks.
+\newblock 2010.
+
+\bibitem[Ghemawat et~al.(2003)Ghemawat, Gobioff, and Leung]{gfs}
+Sanjay Ghemawat, Howard Gobioff, and Shun-Tak Leung.
+\newblock The google file system.
+\newblock 2003.
+
+\bibitem[Javadi(2011)]{seti}
+B.~Javadi.
+\newblock Discovering statistical models of availability in large distributed
+  systems: An empirical study of seti@home,.
+\newblock 2011.
+
+\bibitem[K. et~al.(1900)K., A., and S.]{krz}
+Rzadca K., Datta A., and Buchegger S.
+\newblock Replica placement in p2p storage: Complexity and game theoretic
+  analyses.
+\newblock 1900.
+
+\bibitem[Lazaro(2011)]{availability}
+D.~et~al Lazaro.
+\newblock Long-term availability prediction for groups of volunteer resource.
+\newblock 2011.
+
+\bibitem[M.(1900)]{gossiping}
+Jelasity M.
+\newblock \emph{Gossip-based Peer Sampling}.
+\newblock 1900.
+
+\bibitem[M. and O.()]{tman}
+Jelasity M. and Babaoglu O.
+\newblock T-man: Gossip-based overlay topology management.
+
+\bibitem[P. and D.(2001)]{kademlia}
+Maymounkov P. and Mazisres D.
+\newblock Kademlia: A peer-to-peer information system based on the xor metric.
+\newblock \emph{New York University}, 2001.
+
+\bibitem[P. and K.(1900)]{hetero}
+Skowron P. and Rzadca K.
+\newblock Exploring heterogeneity of unreliable machines for p2p backup.
+\newblock 1900.
+
+\bibitem[unknown(2002)]{farsite}
+unknown.
+\newblock Farsite: Federated, available, and reliable storage for an
+  incompletely trusted environment.
+\newblock 2002.
+
+\bibitem[unknown(2003)]{napster}
+unknown.
+\newblock Measuring and analyzing the characteristics of napster and gnutella
+  hosts.
+\newblock 2003.
 
 \end{thebibliography}
