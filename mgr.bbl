@@ -1,9 +1,17 @@
-\begin{thebibliography}{16}
+\begin{thebibliography}{22}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[ama()]{amazon}
+Amazon s3 official web page.
+\newblock \url{http://aws.amazon.com/s3/}.
+
+\bibitem[icl()]{icloud}
+Apple icloud official web page.
+\newblock \url{http://www.icloud.com}.
 
 \bibitem[sky()]{skype}
 Skype official web page.
@@ -17,72 +25,113 @@ Space monkey official web page.
 Spotify official web page.
 \newblock \url{http://www.spotify.com}.
 
-\bibitem[Anderson(2006)]{storage}
-D.~Anderson.
+\bibitem[Adya et~al.(2002)Adya, Bolosky, Castro, Cermak, Chaiken, Douceur,
+  Howell, Lorch, Theimer, and Wattenhofer]{farsite}
+Atul Adya, William~J Bolosky, Miguel Castro, Gerald Cermak, Ronnie Chaiken,
+  John~R Douceur, Jon Howell, Jacob~R Lorch, Marvin Theimer, and Roger~P
+  Wattenhofer.
+\newblock Farsite: Federated, available, and reliable storage for an
+  incompletely trusted environment.
+\newblock \emph{ACM SIGOPS Operating Systems Review}, 36\penalty0
+  (SI):\penalty0 1--14, 2002.
+
+\bibitem[Anderson and Fedak(2006)]{storage}
+David~P Anderson and Gilles Fedak.
 \newblock The computational and storage potential of volunteer computing.
-\newblock 2006.
+\newblock In \emph{Cluster Computing and the Grid, 2006. CCGRID 06. Sixth IEEE
+  International Symposium on}, volume~1, pages 73--80. IEEE, 2006.
 
-\bibitem[Buchegger et~al.(2009)Buchegger, Schiberg, Vu, and Datta]{peerson}
-Sonja Buchegger, Doris Schiberg, Le~Hung Vu, and Anwitaman Datta.
-\newblock Peerson: P2p social networking - early experiences and insights.
-\newblock In \emph{SocialNets 2009}, 2009.
+\bibitem[Baset and Schulzrinne(2004)]{skype_reverse}
+Salman~A Baset and Henning Schulzrinne.
+\newblock An analysis of the skype peer-to-peer internet telephony protocol.
+\newblock \emph{arXiv preprint cs/0412017}, 2004.
 
-\bibitem[et~al(2010)]{edonkey}
-Le~Blond et~al.
+\bibitem[Blond et~al.(2012)Blond, Fessant, and Merrer]{edonkey}
+Stevens~Le Blond, Fabrice~Le Fessant, and Erwan~Le Merrer.
 \newblock Choosing partners based on availability in p2p networks.
-\newblock 2010.
+\newblock \emph{ACM Transactions on Autonomous and Adaptive Systems (TAAS)},
+  7\penalty0 (2):\penalty0 25, 2012.
+
+\bibitem[Buchegger et~al.(2009)Buchegger, Schi{\"o}berg, Vu, and
+  Datta]{peerson}
+Sonja Buchegger, Doris Schi{\"o}berg, Le-Hung Vu, and Anwitaman Datta.
+\newblock Peerson: P2p social networking: early experiences and insights.
+\newblock In \emph{Proceedings of the Second ACM EuroSys Workshop on Social
+  Network Systems}, pages 46--52. ACM, 2009.
+
+\bibitem[Dean and Ghemawat(2008)]{mapreduce}
+Jeffrey Dean and Sanjay Ghemawat.
+\newblock Mapreduce: simplified data processing on large clusters.
+\newblock \emph{Communications of the ACM}, 51\penalty0 (1):\penalty0 107--113,
+  2008.
 
 \bibitem[Ghemawat et~al.(2003)Ghemawat, Gobioff, and Leung]{gfs}
 Sanjay Ghemawat, Howard Gobioff, and Shun-Tak Leung.
 \newblock The google file system.
-\newblock 2003.
+\newblock In \emph{ACM SIGOPS Operating Systems Review}, volume~37, pages
+  29--43. ACM, 2003.
 
-\bibitem[Javadi(2011)]{seti}
-B.~Javadi.
+\bibitem[Javadi et~al.(2011)Javadi, Kondo, Vincent, and Anderson]{seti}
+Bahman Javadi, Derrick Kondo, J-M Vincent, and David~P Anderson.
 \newblock Discovering statistical models of availability in large distributed
-  systems: An empirical study of seti@home,.
-\newblock 2011.
+  systems: An empirical study of seti@ home.
+\newblock \emph{Parallel and Distributed Systems, IEEE Transactions on},
+  22\penalty0 (11):\penalty0 1896--1903, 2011.
 
-\bibitem[K. et~al.(1900)K., A., and S.]{krz}
-Rzadca K., Datta A., and Buchegger S.
+\bibitem[Jelasity and Babaoglu(2006)]{tman}
+M{\'a}rk Jelasity and Ozalp Babaoglu.
+\newblock T-man: Gossip-based overlay topology management.
+\newblock In \emph{Engineering Self-Organising Systems}, pages 1--15. Springer,
+  2006.
+
+\bibitem[Jelasity et~al.(2007)Jelasity, Voulgaris, Guerraoui, Kermarrec, and
+  Van~Steen]{gossiping}
+M{\'a}rk Jelasity, Spyros Voulgaris, Rachid Guerraoui, Anne-Marie Kermarrec,
+  and Maarten Van~Steen.
+\newblock Gossip-based peer sampling.
+\newblock \emph{ACM Transactions on Computer Systems (TOCS)}, 25\penalty0
+  (3):\penalty0 8, 2007.
+
+\bibitem[L{\'a}zaro et~al.(2012)L{\'a}zaro, Kondo, and
+  Marqu{\`e}s]{availability}
+Daniel L{\'a}zaro, Derrick Kondo, and Joan~Manuel Marqu{\`e}s.
+\newblock Long-term availability prediction for groups of volunteer resources.
+\newblock \emph{Journal of Parallel and Distributed Computing}, 72\penalty0
+  (2):\penalty0 281--296, 2012.
+
+\bibitem[Maymounkov and Mazieres(2002)]{kademlia}
+Petar Maymounkov and David Mazieres.
+\newblock Kademlia: A peer-to-peer information system based on the xor metric.
+\newblock In \emph{Peer-to-Peer Systems}, pages 53--65. Springer, 2002.
+
+\bibitem[Pouwelse et~al.(2005)Pouwelse, Garbacki, Epema, and Sips]{bittorrent}
+Johan Pouwelse, Pawe{\l} Garbacki, Dick Epema, and Henk Sips.
+\newblock The bittorrent p2p file-sharing system: Measurements and analysis.
+\newblock In \emph{Peer-to-Peer Systems IV}, pages 205--216. Springer, 2005.
+
+\bibitem[Rzadca et~al.(2010)Rzadca, Datta, and Buchegger]{krz}
+Krzysztof Rzadca, Anwitaman Datta, and Sonja Buchegger.
 \newblock Replica placement in p2p storage: Complexity and game theoretic
   analyses.
-\newblock 1900.
+\newblock In \emph{Distributed Computing Systems (ICDCS), 2010 IEEE 30th
+  International Conference on}, pages 599--609. IEEE, 2010.
 
-\bibitem[Lazaro(2011)]{availability}
-D.~et~al Lazaro.
-\newblock Long-term availability prediction for groups of volunteer resource.
-\newblock 2011.
-
-\bibitem[M.(1900)]{gossiping}
-Jelasity M.
-\newblock \emph{Gossip-based Peer Sampling}.
-\newblock 1900.
-
-\bibitem[M. and O.()]{tman}
-Jelasity M. and Babaoglu O.
-\newblock T-man: Gossip-based overlay topology management.
-
-\bibitem[P. and D.(2001)]{kademlia}
-Maymounkov P. and Mazisres D.
-\newblock Kademlia: A peer-to-peer information system based on the xor metric.
-\newblock \emph{New York University}, 2001.
-
-\bibitem[P. and K.(1900)]{hetero}
-Skowron P. and Rzadca K.
-\newblock Exploring heterogeneity of unreliable machines for p2p backup.
-\newblock 1900.
-
-\bibitem[unknown(2002)]{farsite}
-unknown.
-\newblock Farsite: Federated, available, and reliable storage for an
-  incompletely trusted environment.
-\newblock 2002.
-
-\bibitem[unknown(2003)]{napster}
-unknown.
+\bibitem[Saroiu et~al.(2003)Saroiu, Gummadi, and Gribble]{napster}
+Stefan Saroiu, Krishna~P Gummadi, and Steven~D Gribble.
 \newblock Measuring and analyzing the characteristics of napster and gnutella
   hosts.
-\newblock 2003.
+\newblock \emph{Multimedia systems}, 9\penalty0 (2):\penalty0 170--184, 2003.
+
+\bibitem[Skowron and Rzadca(2013)]{hetero}
+Piotr Skowron and Krzysztof Rzadca.
+\newblock Exploring heterogeneity of unreliable machines for p2p backup.
+\newblock In \emph{High Performance Computing and Simulation (HPCS), 2013
+  International Conference on}, pages 91--98. IEEE, 2013.
+
+\bibitem[Vogels(2009)]{eventually}
+Werner Vogels.
+\newblock Eventually consistent.
+\newblock \emph{Communications of the ACM}, 52\penalty0 (1):\penalty0 40--44,
+  2009.
 
 \end{thebibliography}
