@@ -1,4 +1,4 @@
-\begin{thebibliography}{22}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -91,6 +91,12 @@ M{\'a}rk Jelasity, Spyros Voulgaris, Rachid Guerraoui, Anne-Marie Kermarrec,
 \newblock Gossip-based peer sampling.
 \newblock \emph{ACM Transactions on Computer Systems (TOCS)}, 25\penalty0
   (3):\penalty0 8, 2007.
+
+\bibitem[Kostreva et~al.(2004)Kostreva, Ogryczak, and Wierzbicki]{equitable}
+Michael~M Kostreva, W{\l}odzimierz Ogryczak, and Adam Wierzbicki.
+\newblock Equitable aggregations and multiple criteria analysis.
+\newblock \emph{European Journal of Operational Research}, 158\penalty0
+  (2):\penalty0 362--377, 2004.
 
 \bibitem[L{\'a}zaro et~al.(2012)L{\'a}zaro, Kondo, and
   Marqu{\`e}s]{availability}
