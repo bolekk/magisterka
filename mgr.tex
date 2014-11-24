@@ -339,7 +339,7 @@ In the definition above, P is the set of all peers in the system and av(p) is pe
 
 BSM is simple and intuitive but it does not fully reflect the fairness we would like to achieve. For example a scenario when peer A has the resulting availability equal to n and peer B has availability 0 is identical to when both peers have availabilities equal to n/2. The latter situation is clearly better form the system creator's perspective and we would like our measure to reflect that. \cite{equitable} provides a nice and fairly simple definition of measures that are fair in the way we would like them to be. It is enough to modify BSM in the following way:\\
 $$BSM(P) = \sum_{p\in P} s(av(p))$$
-where s is any strictly-concave and increasing function. We will use the square root.\\
+where s is any strictly-concave and increasing function, for example the square root.\\
 
 \begin{definition}
 The {\it equitable system measure (ESM)} is defined as follows
@@ -397,7 +397,7 @@ In the time-slot model, data availability of a single peer $p_1$ whose data is a
 
 % najpierw kliki - FPR
 
-Let us begin with an optimization problem proposed by [KRZ] together with a proof of its NP-completeness.\\
+Let us begin with an optimization problem proposed by \cite{krz} together with a proof of its NP-completeness, which is a contribution of this work.\\
 
 An instance of the {\bf Fair Peer Replication} (FPR) problem consists of the set of peers $\{p_1,\ldots,p_n\}$ in a time-slot model with $T$ intervals. The optimization goal is to assign each peer to a clique, such that all the cliques are complete $(\forall G_k:A_{G_k} = \mathcal{T})$ and the size of the largest clique is minimized ($\min\max(|G_1|,\ldots,|G_N|)$).\\
 
@@ -428,7 +428,7 @@ The FPR problem aims at achieving a state with perfect availability and minimize
 
 An instance of the {\bf Uniform Peer Replication} (UPR) problem consists of the set of peers $\{p_1,\ldots,p_n\}$ in a time-slot model with $T$ intervals. Each peer has exactly $K$ replication slots available. The optimization goal is to assign exactly $K$ peers (replicas) to every peer so that each peer replicates exactly $K$ other peers and the sum of all resulting availabilities is maximized.\\
 
-\textcolor{red}{TODO: podobny do 3-dimensinal assignment}
+\textcolor{red}{TODO: NP-trudnosc. Podobny do 3-dimensional assignment.}
 
 \section{De-centralized approach}
 
@@ -484,14 +484,21 @@ Such solution will favour weaker peers. Thus, highly-available peers lose incent
 
 We can see that both of these measures lead to some imbalance in the system. That is why we will try using hybrids of the above-mentioned measures.\\
 
-{\bf Example \#3}\\
 The most natural of such hybrids is a simple sum of the measures from examples 1 and 2.
 $$AM_{sum}(p_i) = |A_i| + |A_r \cap A_i|$$
 This measure does not have the disadvantage from example 2. Peers have no incentives to lower their availability because their gain can be at most zero ($AM_{sum}$ is fair). Also the whole system is not biased towards the best peers.\\
 
-\textcolor{red}{TODO: tutaj wstawie rysunek podobny do tego, ktory narysowalem na tablicy i powiem o liniowych kombinacjach dwoch powyzszych skladnikow w mierze. Musze tez jeszcze rozwazyc nieliniowe kombinacje.}\\
+It is easy to observe that $AM_{sum}$ is some kind of a borderline measure. If the first element of the sum had any lower significance (for example was taken with a coefficient $0.9$) then the measure will not be fair any more. Peers would be able to increase measure's value by artificially lowering their availability. We can see that the system cannot be biased towards the weaker peers too much as it could lead to dishonesty in advertising availabilities.\\
 
-% Przyklad, ze miary zalezne od sytuacji prowadza do cyklu
+\begin{figure}[h]
+\centering
+\includegraphics{measures.pdf}
+\caption{A classification of simple measures with respect to their fairness.}
+\end{figure}
+
+The figure above is an attempt to visualise which measures are interesting to us.\\
+
+\textcolor{red}{TODO: Jakie miary przetestujemy? Analiza najgorszego przypadku? Jakiego?}
 
 %
 %
@@ -501,7 +508,7 @@ This measure does not have the disadvantage from example 2. Peers have no incent
 
 \chapter{Experiments}\label{chap:experiments}
 
-Last chapter of this work is devoted to analysing outcomes of the simulations and real-life deployments of Nebulostore with various replicating strategies that we discussed in chapter 3.
+Last chapter of this work is devoted to analysing outcomes of the simulations and real-life deployments of Nebulostore with various replicating strategies that we discussed in Chapter 3.
 Before conducting any experiments, we need to know what are the expected peers' capabilities in terms of disk space and availability. When it comes to disk space, authors of \cite{farsite} suggest that disk capacities are increasing faster than storage needs. Since in early 2000s estimated percentage of unused disk space on an average corporate workstation was above 50\%, we can safely assume that space requirements for data replication are easily fulfilled. \textcolor{red}{TODO czy jest sens pisac o early 2000s?}
 On the other hand, peer availability is a more complex issue, which we need to research more thoroughly before formulating any assumptions. \\
 
@@ -529,13 +536,15 @@ It is worth noting that BOINC has in fact a client-server architecture, not a P2
 
 \subsection{Backup system deployment}
 
-Another interesting deployment is presented in \cite{hetero}. A backup system similar to Nebulostore was installed in a university computer lab and also in the PlanetLab environment. Authors claim that the main factor contributing to system's quality and efficiency is the availability of hosts. In the university lab deployment, the average availability of the machines was only 13\% and transient failures were very frequent. However, with the help of asynchronous messaging, auhors were able to a`chieve overall stability. Average times of creating the first, the second and the third replica of a file ware equal to, respectively, 1.1h, 2.7h and 5.5h.\\
+Another interesting deployment is presented in \cite{hetero}. A backup system similar to Nebulostore was installed in a university computer lab and also in the PlanetLab environment. Authors claim that the main factor contributing to system's quality and efficiency is the availability of hosts. In the university lab deployment, the average availability of the machines was only 13\% and transient failures were very frequent. However, with the help of asynchronous messaging, authors were able to achieve overall stability. Average times of creating the first, the second and the third replica of a file ware equal to, respectively, 1.1h, 2.7h and 5.5h.\\
 
 \textcolor{red}{czy jeszcze jakies wnioski? Czy napisac ze ten projekt byl w jakis sposob zwiazany z Nebulo, byl jego bratem lub przodkiem?}
 
 \section{Simulations}
 
-\textcolor{red}{symulujac warunki wynikajace z powyzszych prac}
+\textcolor{red}{Przyklad, ze miary zalezne od sytuacji prowadza do cyklu, a taka jest wlasnie private measure wiec potrzebujemy ograniczenia na ilosc iteracji i jeszcze dodatkowo epsilon}\\
+
+\textcolor{red}{symulujemy warunki wynikajace z powyzszych prac}
 
  
  
