@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class KrzPeerFactory implements PeerFactory {
+public class KrzProbPeerFactory implements PeerFactory {
 
   private static Random rand = new Random(99413);
 
@@ -56,7 +56,7 @@ public class KrzPeerFactory implements PeerFactory {
 
   @Override
   public String getName() {
-    return "KRZ";
+    return "KRZ_PROB";
   }
 
 }

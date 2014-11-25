@@ -7,17 +7,20 @@ public class Main {
 
   private static final int nPeers = 500;
   private static final int timeSlots = 24;
-  private static final int replicationSlots = 2;
+  private static final int replicationSlots = 3;
   private static final int maxIters = 30;
 
 
 
   public static void main(String[] args) {
     List<PeerFactory> factories = new ArrayList<>();    
-    final int expectedCoverage = 8;
+    final int expectedCoverage = 10;
     //factories.add(new RandomizedPeerFactory(expectedCoverage));
+    factories.add(new RandomizedContPeerFactory(expectedCoverage));
     //factories.add(new NapsterPeerFactory());
-    factories.add(new KrzPeerFactory());
+    //factories.add(new KrzProbPeerFactory());
+    //final double paretoShape = 0.1;
+    //factories.add(new KrzTimeSlotPeerFactory(paretoShape));
     
     Measure privateMeasure = new SelfishPrivateMeasure();
 
