@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RandomizedPeerFactory implements PeerFactory {
+public class UniformPeerFactory implements PeerFactory {
 
   private static Random rand = new Random(122413);
   private int expectedCoverage;
   
-  public RandomizedPeerFactory(int expectedCoverage) {
+  public UniformPeerFactory(int expectedCoverage) {
     this.expectedCoverage = expectedCoverage;
   }
 

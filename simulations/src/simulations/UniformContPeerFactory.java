@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RandomizedContPeerFactory implements PeerFactory {
+public class UniformContPeerFactory implements PeerFactory {
 
-  private static Random rand = new Random(722413);
+  private Random rand;
   private int expectedCoverage;
   
-  public RandomizedContPeerFactory(int expectedCoverage) {
+  public UniformContPeerFactory(int expectedCoverage, long randomSeed) {
     this.expectedCoverage = expectedCoverage;
+    this.rand = new Random(randomSeed);
   }
 
   @Override

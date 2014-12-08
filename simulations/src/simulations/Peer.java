@@ -246,8 +246,18 @@ public class Peer {
     return ret;
   }
   
+  /**
+   * @return number of replication slots
+   */
   public int getSlotsNum() {
     return slots;
+  }
+  
+  /**
+   * @return number of time slots
+   */
+  public int getT() {
+    return T;
   }
   
   @Override

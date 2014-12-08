@@ -12,6 +12,9 @@
 linesnumbered]{algorithm2e}
 \usepackage{multirow}
 
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}
+
 %\sloppy
 
 %\usepackage[plain]{algorithm}
@@ -54,7 +57,7 @@ linesnumbered]{algorithm2e}
 
 \date{December 2014}
 
-%Poda�? dziedzin�? wg klasyfikacji Socrates-Erasmus:
+%wg klasyfikacji Socrates-Erasmus:
 \dziedzina{ 
 %11.0 Matematyka, Informatyka:\\ 11.1 Matematyka\\ 11.2 Statystyka\\ 
 11.3 Informatyka\\ 
@@ -87,7 +90,7 @@ C.2.4 Distributed systems}
 \SVN $Date$
 %$Date: 2011-04-19 15:37:49 +0200 (wto, 19 kwi 2011) $
 
-\newcounter{collective_ctr} \numberwithin{collective_ctr}{section}
+\newcounter{collective_ctr} \numberwithin{collective_ctr}{chapter}
 
 \newtheorem{proposition}[collective_ctr]{Proposition}
 \newtheorem{theorem}[collective_ctr]{Theorem}
@@ -407,10 +410,11 @@ In this work, we focus only on the time-slot model. It seems to be more interest
 
 We can observe that this model lacks the symmetry of the probabilistic model. Some arrangements of availability slots can lead to situations where peer A is worthless for peer B but very valuable for peer C (see Figure \ref{fig:abc}).\\
 
-\begin{figure}[h]\label{fig:abc}
+\begin{figure}[h]
 \centering
 \includegraphics{abc.pdf}
 \caption{Example with 7 time slots where peer A covers slots 1-3, peer B covers slots 1-4 and peer C covers slots 3-7}
+\label{fig:abc}
 \end{figure}
 
 Because of this lack of symmetry, we no longer require peers to form reciprocal cliques. Instead, every peer finds its own replicas independently.\\
@@ -527,10 +531,11 @@ This measure does not have the disadvantage from example 2. Peers have no incent
 
 It is easy to observe that $AM_{sum}$ is some kind of a borderline measure. If the first element of the sum had any lower significance (for example was taken with a coefficient $0.9$) then the measure will not be fair any more. Peers would be able to increase measure's value by artificially lowering their availability. We can see that the system cannot be biased towards the weakly-available peers too much as it could lead to dishonesty in advertising availabilities. Figure \ref{fig:measures} visualizes the spectrum of measures with regards to their truthfulness.\\
 
-\begin{figure}[h]\label{fig:measures}
+\begin{figure}[h]
 \centering
 \includegraphics{measures.pdf}
 \caption{A classification of simple measures with respect to their truthfulness.}
+\label{fig:measures}
 \end{figure}
 
 \textcolor{red}{TODO: Analiza najgorszego przypadku, jakie peery moga miec availability zeby caly system i tak byl slaby}
@@ -574,14 +579,35 @@ Another interesting deployment is presented in \cite{hetero}. A backup system si
 
 \section{Simulations}
 
-\textcolor{red}{Przyklad, ze miary zalezne od sytuacji prowadza do cyklu, a taka jest wlasnie private measure wiec potrzebujemy ograniczenia na ilosc iteracji i jeszcze dodatkowo epsilon}\\
+\subsection{Configuration}
 
-\textcolor{red}{symulujemy warunki wynikajace z powyzszych prac}
+Let us start with discussing the environment of our simulations and all the parameters that we used. Every system simulation consists of a finite number of rounds. In every round, each peer ranks all other peers according to its private measure. As discussed earlier, for the purpose of our simulations, all peers are using the selfish private measure (see Section \ref{decentralized}). After all potential replicas are sorted, the peer iterates over them starting from the best (according to the private measure). It sends a replication request to a peer only if it received a higher valuation than the current replica with lowest valuation or the requesting peer still has less than $K$ replicators, where $K$ is the number of replication slots.\\
+
+When it comes to peer parameters, we set the number of time slots $T=24$ to reflect the daily patterns of real-life system members. The number of replication slots $K$ varies between experiments but is never greater than 5. The number of peers used in every simulation is equal to 1000.\\
+
+We know from Chapter 3 that using private measures that rely on current state of the system does not guarantee convergence of the whole simulation. That is why we stop our simulations whenever difference in the value of system measure between two consecutive rounds in less than 0.0005. Moreover, we also limit the number of rounds by 30 but it turns out that the round limit is never reached.\\
+
+Acceptance measures used in the experiments are the three measures defined in Chapter 3, namely $AM_{weak}$, $AM_{sum}$ and $AM_{strong}$. The first one, $AM_{weak}$ is not a truthful measure so the results when it is used are not sustainable in a real setting. We still put it on graphs because we think it is interesting to compare what could be possible to achieve when members are not selfish. We ran experiment using a few more measures that linear combinations of $AM_{sum}$ and $AM_{strong}$ but the results were always between these two. We decided not to put them on graphs to keep the images cleaner. Finally, we ran one additional simulation - a random one. In that case, every peer is randomly assigned $K$ other peers from the system. Please not that such scenario is also unsustainable and serves only as an interesting comparison.\\
+
+We use four different arrangements of peers' availabilities.\\
+
+1. {\bf Uniform}. For every peer, we set each time-slot to available with probability $\frac{n}{24}$ where $n$ is a parameter. In the resulting peer set, every peer is available on average in $n$ slots out of 24.\\
+
+2. {\bf Uniform continuous}. For every peer, we randomly select a time-slot $t$ and make this peer available for $n$ consecutive time-slots starting at $t$, where $n$ is a parameter. \\
+
+3. {\bf Napster-like}. This setting is based on data presented in the previous section that is coming from Napster/Gnutella analyses. Here 20\% of peers is available in 20 random slots. 30\% of peers is available in 2 or 1 slots. The rest of the peers (50\%) are available in exactly one random slot out of 24.\\
+
+4. {\bf Corporate.} The corporate setting is taken from \cite{krz} and is supposed to better reflect the real time zone distribution, which is not uniform. All peers are available in a continuous interval of slots, of which 10\% is available in 8 slots, 25\%  in 7 slots, 30\% in 6 slots and the remaining 35\% in only 2 slots. Furthermore, the starting slot is chosen randomly from a Pareto distribution with the shape parameter equal to $\alpha$ for $\alpha \in \{0.1, 0.5, 1.0, 1.5, 2.0\}$\\
+
+\subsection{Results}
+
+Results for the uniform continuous setting are depicted in figure \ref{uni_cont_3}.\\
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.55]{uni_cont_3.pdf}
-\caption{Bla bla.}
+\caption{Results for uniform continuous setting with $K=3$ replication slots.}
+\label{uni_cont_3}
 \end{figure}
  
 %Other notes and ideas
