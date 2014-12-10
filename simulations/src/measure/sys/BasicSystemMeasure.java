@@ -2,9 +2,9 @@ package measure.sys;
 
 import java.util.List;
 
-import simulations.Peer;
-import simulations.Sim;
-import simulations.Stat;
+import peer.Peer;
+import simulation.Sim;
+import simulation.Stat;
 
 public class BasicSystemMeasure extends SystemMeasure {
 

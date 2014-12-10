@@ -1,9 +1,22 @@
-package simulations;
+package main;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import peer.Peer;
+import peer.PeerFactory;
+import peer.UniformContPeerFactory;
+import simulation.GameSim;
+import simulation.RandomSim;
+import simulation.Sim;
+import measure.peer.Measure;
+import measure.peer.PureStrengthMeasure;
+import measure.peer.PureWeaknessMeasure;
+import measure.peer.SelfishPrivateMeasure;
+import measure.peer.StrengthBiasedMeasure;
+import measure.peer.SumMeasure;
+import measure.peer.WeakBiasedMeasure;
 import measure.sys.BasicSystemMeasure;
 import measure.sys.EquitableSystemMeasure;
 import measure.sys.SystemMeasure;

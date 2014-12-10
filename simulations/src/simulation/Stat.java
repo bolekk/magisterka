@@ -1,4 +1,6 @@
-package simulations;
+package simulation;
+
+import peer.Peer;
 
 public class Stat {
   public int av;

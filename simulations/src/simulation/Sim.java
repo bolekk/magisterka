@@ -1,7 +1,9 @@
-package simulations;
+package simulation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import peer.Peer;
 
 public abstract class Sim {
 

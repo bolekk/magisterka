@@ -1,9 +1,11 @@
-package simulations;
+package peer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import measure.peer.Measure;
 
 import com.google.common.base.Preconditions;
 

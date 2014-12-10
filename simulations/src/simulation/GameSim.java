@@ -1,8 +1,10 @@
-package simulations;
+package simulation;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import peer.Peer;
 
 public class GameSim extends Sim {
 

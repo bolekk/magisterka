@@ -1,4 +1,6 @@
-package simulations;
+package measure.peer;
+
+import peer.Peer;
 
 public abstract class Measure {
 

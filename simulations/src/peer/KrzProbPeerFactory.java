@@ -1,8 +1,10 @@
-package simulations;
+package peer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import measure.peer.Measure;
 
 public class KrzProbPeerFactory implements PeerFactory {
 

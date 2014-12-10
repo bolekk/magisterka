@@ -1,4 +1,6 @@
-package simulations;
+package measure.peer;
+
+import peer.Peer;
 
 /**
  * Requester's own strength + how many new slots the replica can add

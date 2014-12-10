@@ -1,6 +1,6 @@
 package measure.sys;
 
-import simulations.Sim;
+import simulation.Sim;
 
 public abstract class SystemMeasure {
 

@@ -1,8 +1,10 @@
-package simulations;
+package simulation;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import peer.Peer;
 
 public class RandomSim extends Sim {
   
