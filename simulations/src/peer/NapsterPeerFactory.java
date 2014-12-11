@@ -8,9 +8,13 @@ import measure.peer.Measure;
 
 public class NapsterPeerFactory implements PeerFactory {
 
-  private static Random rand = new Random(122413);
+  private final Random random;
   private double bestFraction = 0.2;
   private double worstFraction = 0.5;
+
+  public NapsterPeerFactory(long randomSeed) {
+    random = new Random(randomSeed);
+  }
 
   @Override
   public List<Peer> generatePeers(int nPeers, int T, int slots, Measure privateMeasure, Measure acceptanceMeasure) {
@@ -34,7 +38,7 @@ public class NapsterPeerFactory implements PeerFactory {
     List<Boolean> ret = new ArrayList<>();
     boolean anything = false;
     for (int i = 0; i < len; ++i) {
-      int nextInt = rand.nextInt(len);
+      int nextInt = random.nextInt(len);
       ret.add(nextInt < expected);
       if (nextInt < expected) {
         anything = true;
@@ -49,7 +53,7 @@ public class NapsterPeerFactory implements PeerFactory {
 
   private List<Boolean> getSingleAv(int len) {
     List<Boolean> ret = new ArrayList<>();
-    int available = rand.nextInt(len);
+    int available = random.nextInt(len);
     for (int i = 0; i < len; ++i) {
       ret.add(i == available);
     }

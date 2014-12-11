@@ -6,14 +6,15 @@ import java.util.Random;
 
 import peer.Peer;
 
-public class RandomSim extends Sim {
-  
-  Random random = new Random(13244441);
+public class RandomizedSimulation extends Simulation {
 
-  public RandomSim(List<Peer> peers) {
+  private final Random random;
+
+  public RandomizedSimulation(List<Peer> peers, long randomSeed) {
     super(peers);
+    random = new Random(randomSeed);
   }
-  
+
   // group peers randomly
   protected boolean tryFindBetterReplica(Peer peer) {
     if (peer.getSlotsNum() == peer.getReplicas().size())

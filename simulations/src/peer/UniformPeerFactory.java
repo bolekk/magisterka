@@ -8,11 +8,12 @@ import measure.peer.Measure;
 
 public class UniformPeerFactory implements PeerFactory {
 
-  private static Random rand = new Random(122413);
+  private final Random random;
   private int expectedCoverage;
-  
-  public UniformPeerFactory(int expectedCoverage) {
+
+  public UniformPeerFactory(int expectedCoverage, long randomSeed) {
     this.expectedCoverage = expectedCoverage;
+    this.random = new Random(randomSeed);
   }
 
   @Override
@@ -24,10 +25,10 @@ public class UniformPeerFactory implements PeerFactory {
     return peers;
   }
 
-  private static List<Boolean> getRandomAv(int len, int expected) {
+  private List<Boolean> getRandomAv(int len, int expected) {
     List<Boolean> ret = new ArrayList<>();
     for (int i = 0; i < len; ++i) {
-      int nextInt = rand.nextInt(len);
+      int nextInt = random.nextInt(len);
       ret.add(nextInt < expected);
     }
     return ret;
@@ -37,5 +38,4 @@ public class UniformPeerFactory implements PeerFactory {
   public String getName() {
     return "Uniform";
   }
-
 }

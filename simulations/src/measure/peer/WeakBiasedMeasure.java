@@ -11,7 +11,7 @@ public class WeakBiasedMeasure extends Measure {
 
   @Override
   public String getName() {
-    return "Weak-biased";
+    return "Half-weak";
   }
   
 }

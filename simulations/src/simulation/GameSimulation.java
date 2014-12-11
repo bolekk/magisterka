@@ -6,9 +6,9 @@ import java.util.List;
 
 import peer.Peer;
 
-public class GameSim extends Sim {
+public class GameSimulation extends Simulation {
 
-  public GameSim(List<Peer> peers) {
+  public GameSimulation(List<Peer> peers) {
     super(peers);
   }
 

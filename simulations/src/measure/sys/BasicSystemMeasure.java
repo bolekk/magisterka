@@ -3,7 +3,7 @@ package measure.sys;
 import java.util.List;
 
 import peer.Peer;
-import simulation.Sim;
+import simulation.Simulation;
 import simulation.Stat;
 
 public class BasicSystemMeasure extends SystemMeasure {
@@ -15,7 +15,7 @@ public class BasicSystemMeasure extends SystemMeasure {
   }
 
   @Override
-  public double evaluate(Sim simulation) {
+  public double evaluate(Simulation simulation) {
     List<Stat> results = simulation.getResults();
     int nPeers = results.size();
     Peer samplePeer = results.get(0).peer;
@@ -52,11 +52,11 @@ public class BasicSystemMeasure extends SystemMeasure {
   }
   
   @Override
-  public double evaluateNormalized(Sim simulation) {
+  public double evaluateNormalized(Simulation simulation) {
     return evaluate(simulation) / getMaxScore(simulation);
   }
   
-  private double getMaxScore(Sim simulation) {
+  private double getMaxScore(Simulation simulation) {
     List<Stat> results = simulation.getResults();
     int nPeers = results.size();
     Peer samplePeer = results.get(0).peer;

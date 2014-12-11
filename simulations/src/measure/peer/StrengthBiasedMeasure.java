@@ -11,7 +11,7 @@ public class StrengthBiasedMeasure extends Measure {
 
   @Override
   public String getName() {
-    return "Strength-biased";
+    return "Half-strong";
   }
   
 }

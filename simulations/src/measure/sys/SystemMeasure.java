@@ -1,12 +1,12 @@
 package measure.sys;
 
-import simulation.Sim;
+import simulation.Simulation;
 
 public abstract class SystemMeasure {
 
-  public abstract double evaluate(Sim simulation);
+  public abstract double evaluate(Simulation simulation);
   
-  public abstract double evaluateNormalized(Sim simulation);
+  public abstract double evaluateNormalized(Simulation simulation);
   
   public abstract String getName();
 }

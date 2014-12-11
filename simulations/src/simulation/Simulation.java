@@ -5,12 +5,12 @@ import java.util.List;
 
 import peer.Peer;
 
-public abstract class Sim {
+public abstract class Simulation {
 
   private int iterCount;
   protected List<Peer> peers;
 
-  public Sim(List<Peer> peers) {
+  public Simulation(List<Peer> peers) {
     this.peers = peers;
     this.iterCount = 0;
   }

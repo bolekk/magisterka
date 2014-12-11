@@ -2,6 +2,9 @@ package measure.peer;
 
 import peer.Peer;
 
+/**
+ * Base class for peer measures.
+ */
 public abstract class Measure {
 
   /**

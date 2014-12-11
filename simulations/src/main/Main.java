@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import peer.CorpProbPeerFactory;
+import peer.CorpTimeSlotPeerFactory;
+import peer.NapsterPeerFactory;
 import peer.Peer;
 import peer.PeerFactory;
 import peer.UniformContPeerFactory;
-import simulation.GameSim;
-import simulation.RandomSim;
-import simulation.Sim;
+import peer.UniformPeerFactory;
+import simulation.GameSimulation;
+import simulation.RandomizedSimulation;
+import simulation.Simulation;
 import measure.peer.Measure;
 import measure.peer.PureStrengthMeasure;
 import measure.peer.PureWeaknessMeasure;
@@ -21,26 +25,29 @@ import measure.sys.BasicSystemMeasure;
 import measure.sys.EquitableSystemMeasure;
 import measure.sys.SystemMeasure;
 
+/**
+ * Application entry point.
+ */
 public class Main {
 
+  private static final int maxIters = 30;
+  private static final double epsilon = 0.0005;
+  private static final Random random = new Random(121314312);
+  
   private static final int nPeers = 1000;
   private static final int timeSlots = 24;
   private static final int replicationSlots = 5;
-  private static final int maxIters = 25;
-  private static final double epsilon = 0.001;
-  private static final Random random = new Random(121314312);
-
 
 
   public static void main(String[] args) {
     List<PeerFactory> factories = new ArrayList<>();    
-    final int expectedCoverage = 4;
-    //factories.add(new UniformPeerFactory(expectedCoverage));
-    factories.add(new UniformContPeerFactory(expectedCoverage, random.nextLong()));
-    //factories.add(new NapsterPeerFactory());
-    //factories.add(new KrzProbPeerFactory());
-    //final double paretoShape = 0.1;
-    //factories.add(new KrzTimeSlotPeerFactory(paretoShape));
+    //final int expectedCoverage = 4;
+    //factories.add(new UniformPeerFactory(expectedCoverage, random.nextLong()));
+    //factories.add(new UniformContPeerFactory(expectedCoverage, random.nextLong()));
+    //factories.add(new NapsterPeerFactory(random.nextLong()));
+    //factories.add(new CorpProbPeerFactory(random.nextLong()));
+    final double paretoShape = 0.1;
+    factories.add(new CorpTimeSlotPeerFactory(paretoShape, random.nextLong()));
     
     Measure privateMeasure = new SelfishPrivateMeasure();
 
@@ -59,26 +66,32 @@ public class Main {
       // games
       for (Measure measure : measures) {
         List<Peer> peers = factory.generatePeers(nPeers, timeSlots, replicationSlots, privateMeasure, measure);
-        Sim sim = new GameSim(peers);
+        Simulation sim = new GameSimulation(peers);
         runAndPrint(factory.getName(), measure.getName(), sim, sysMeasures);
       }
-      // random (measure irrelevant)
+      // random (measure is irrelevant)
       List<Peer> peers = factory.generatePeers(nPeers, timeSlots, replicationSlots, new SumMeasure(), new SumMeasure()); 
-      Sim sim = new RandomSim(peers);
+      Simulation sim = new RandomizedSimulation(peers, random.nextLong());
       runAndPrint(factory.getName(), "Random", sim, sysMeasures);
     }
   }
 
-  private static void runAndPrint(String factoryName, String peerMeasureName, Sim sim, List<SystemMeasure> sysMeasures) {
-    int effectiveIters = sim.run(maxIters, true);
-    
-    System.out.println("---- FACTORY: " + factoryName + " ---- PEER MEASURE: " + peerMeasureName);
-    for (SystemMeasure sysMeasure : sysMeasures) {
-      printAllResults(sim, effectiveIters, sysMeasure);
+  private static void runAndPrint(String factoryName, String peerMeasureName, Simulation sim, List<SystemMeasure> sysMeasures) {
+    SystemMeasure firstMeasure = sysMeasures.get(0);
+    double lastVal = 2.0;
+    int iter = 0;
+    for (; iter < maxIters; iter++) {
+      sim.run(1, true);
+      double currVal = firstMeasure.evaluateNormalized(sim);
+      if (Math.abs(currVal - lastVal) < epsilon) {
+        break;
+      }
+      lastVal = currVal;
     }
-  }
-
-  private static void printAllResults(Sim sim, int effectiveIters, SystemMeasure sysMeasure) {
-    System.out.println("SYS MEASURE (" + sysMeasure.getName() + ") = " + sysMeasure.evaluateNormalized(sim));
+    
+    System.out.println("---- FACTORY: " + factoryName + " ---- PEER MEASURE: " + peerMeasureName + " ---- ITERATIONS: " + iter);
+    for (SystemMeasure sysMeasure : sysMeasures) {
+      System.out.println("SYS MEASURE (" + sysMeasure.getName() + ") = " + sysMeasure.evaluateNormalized(sim));
+    }
   }
 }

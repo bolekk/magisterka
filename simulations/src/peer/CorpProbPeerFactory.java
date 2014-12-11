@@ -6,10 +6,14 @@ import java.util.Random;
 
 import measure.peer.Measure;
 
-public class KrzProbPeerFactory implements PeerFactory {
+public class CorpProbPeerFactory implements PeerFactory {
 
-  private static Random rand = new Random(99413);
+  private final Random random;
 
+  public CorpProbPeerFactory(long randomSeed) {
+    random = new Random(randomSeed);
+  }
+  
   @Override
   public List<Peer> generatePeers(int nPeers, int T, int slots, Measure privateMeasure, Measure acceptanceMeasure) {
     List<Peer> peers = new ArrayList<>();
@@ -34,7 +38,7 @@ public class KrzProbPeerFactory implements PeerFactory {
     List<Boolean> ret = new ArrayList<>();
     boolean anything = false;
     for (int i = 0; i < len; ++i) {
-      int nextInt = rand.nextInt(len);
+      int nextInt = random.nextInt(len);
       ret.add(nextInt < expected);
       if (nextInt < expected) {
         anything = true;
@@ -49,7 +53,7 @@ public class KrzProbPeerFactory implements PeerFactory {
 
   private List<Boolean> getSingleAv(int len) {
     List<Boolean> ret = new ArrayList<>();
-    int available = rand.nextInt(len);
+    int available = random.nextInt(len);
     for (int i = 0; i < len; ++i) {
       ret.add(i == available);
     }
@@ -58,7 +62,7 @@ public class KrzProbPeerFactory implements PeerFactory {
 
   @Override
   public String getName() {
-    return "KRZ_PROB";
+    return "Corporate probabilistic";
   }
 
 }

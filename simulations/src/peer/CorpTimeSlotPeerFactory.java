@@ -9,14 +9,15 @@ import measure.peer.Measure;
 
 import com.google.common.base.Preconditions;
 
-public class KrzTimeSlotPeerFactory implements PeerFactory {
+public class CorpTimeSlotPeerFactory implements PeerFactory {
 
-  private static Random rand = new Random(99113);
+  private final Random random;
   private List<Integer> perm = new ArrayList<>();
   private double paretoShape;
 
-  public KrzTimeSlotPeerFactory(double paretoShape) {
+  public CorpTimeSlotPeerFactory(double paretoShape, long randomSeed) {
     this.paretoShape = paretoShape;
+    random = new Random(randomSeed);
   }
 
   @Override
@@ -59,9 +60,9 @@ public class KrzTimeSlotPeerFactory implements PeerFactory {
   }
 
   private double getRandomPareto(double alpha) { 
-    double v = rand.nextDouble(); 
+    double v = random.nextDouble(); 
     while (v == 0){ 
-        v = rand.nextDouble(); 
+        v = random.nextDouble(); 
     }
     return 1.0 / Math.pow(v, 1.0/alpha); 
   }
@@ -77,6 +78,6 @@ public class KrzTimeSlotPeerFactory implements PeerFactory {
 
   @Override
   public String getName() {
-    return "KRZ_TIME_SLOT";
+    return "Corporate";
   }
 }

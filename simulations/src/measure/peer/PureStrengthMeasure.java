@@ -11,7 +11,7 @@ public class PureStrengthMeasure extends Measure {
 
   @Override
   public String getName() {
-    return "Strength";
+    return "Strong";
   }
   
 }
