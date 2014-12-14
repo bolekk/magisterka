@@ -3,8 +3,8 @@ package measure.peer;
 import peer.Peer;
 
 /**
- * Requester's own strength + how many new slots the replica can add
- * to requester's ORIGINAL coverage.
+ * Requester's own strength + how many new slots the replica can add to
+ * requester's ORIGINAL coverage.
  */
 public class SumMeasure extends Measure {
 

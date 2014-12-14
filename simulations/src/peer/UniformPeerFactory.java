@@ -17,10 +17,12 @@ public class UniformPeerFactory implements PeerFactory {
   }
 
   @Override
-  public List<Peer> generatePeers(int nPeers, int T, int slots, Measure privateMeasure, Measure acceptanceMeasure) {
+  public List<Peer> generatePeers(int nPeers, int T, int slots,
+      Measure privateMeasure, Measure acceptanceMeasure) {
     List<Peer> peers = new ArrayList<>();
     for (int i = 0; i < nPeers; ++i) {
-      peers.add(new Peer(i, T, getRandomAv(T, expectedCoverage), slots, privateMeasure, acceptanceMeasure));
+      peers.add(new Peer(i, T, getRandomAv(T, expectedCoverage), slots,
+          privateMeasure, acceptanceMeasure));
     }
     return peers;
   }

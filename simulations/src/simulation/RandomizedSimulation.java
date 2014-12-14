@@ -6,6 +6,9 @@ import java.util.Random;
 
 import peer.Peer;
 
+/**
+ * Group peers randomly.
+ */
 public class RandomizedSimulation extends Simulation {
 
   private final Random random;

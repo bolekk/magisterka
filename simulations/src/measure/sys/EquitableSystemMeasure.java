@@ -19,23 +19,26 @@ public class EquitableSystemMeasure extends SystemMeasure {
     List<Stat> results = simulation.getResults();
 
     double globalStrength = 0.0;
-    if (debug) System.out.print("AVAILABILITY (ORIGINAL AV, REPLICAS I HAVE, MY SLOTS USED)\n");
+    if (debug)
+      System.out
+          .print("AVAILABILITY (ORIGINAL AV, REPLICAS I HAVE, MY SLOTS USED)\n");
     for (Stat s : results) {
       globalStrength += Math.sqrt(s.av);
       if (debug) {
-        System.out.print(s.av + "(" + s.peer.getOriginalTotalAv() + "; " +
-            s.peer.getReplicas().size() + "; " + s.peer.getReplicatedBy().size() + ") ");
+        System.out.print(s.av + "(" + s.peer.getOriginalTotalAv() + "; "
+            + s.peer.getReplicas().size() + "; "
+            + s.peer.getReplicatedBy().size() + ") ");
       }
     }
 
     return globalStrength;
   }
-  
+
   @Override
   public double evaluateNormalized(Simulation simulation) {
     return evaluate(simulation) / getMaxScore(simulation);
   }
-  
+
   private double getMaxScore(Simulation simulation) {
     List<Stat> results = simulation.getResults();
     int nPeers = results.size();

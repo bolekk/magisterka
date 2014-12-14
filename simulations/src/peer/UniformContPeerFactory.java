@@ -10,17 +10,19 @@ public class UniformContPeerFactory implements PeerFactory {
 
   private Random rand;
   private int expectedCoverage;
-  
+
   public UniformContPeerFactory(int expectedCoverage, long randomSeed) {
     this.expectedCoverage = expectedCoverage;
     this.rand = new Random(randomSeed);
   }
 
   @Override
-  public List<Peer> generatePeers(int nPeers, int T, int slots, Measure privateMeasure, Measure acceptanceMeasure) {
+  public List<Peer> generatePeers(int nPeers, int T, int slots,
+      Measure privateMeasure, Measure acceptanceMeasure) {
     List<Peer> peers = new ArrayList<>();
     for (int i = 0; i < nPeers; ++i) {
-      peers.add(new Peer(i, T, getRandomContAv(T, expectedCoverage), slots, privateMeasure, acceptanceMeasure));
+      peers.add(new Peer(i, T, getRandomContAv(T, expectedCoverage), slots,
+          privateMeasure, acceptanceMeasure));
     }
     return peers;
   }
@@ -37,10 +39,9 @@ public class UniformContPeerFactory implements PeerFactory {
     return ret;
   }
 
-
   @Override
   public String getName() {
-    return "Uniform continuous";
+    return "Uniform Continuous";
   }
 
 }

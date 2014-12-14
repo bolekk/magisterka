@@ -2,16 +2,16 @@ package measure.peer;
 
 import peer.Peer;
 
-public class StrengthBiasedMeasure extends Measure {
+public class WeakMeasure extends Measure {
 
   @Override
   public long score(Peer replica, Peer requester) {
-    return 2 * getStrength(requester) + getAdditional(replica, requester);
+    return getAdditional(replica, requester);
   }
 
   @Override
   public String getName() {
-    return "Half-strong";
+    return "Weak";
   }
-  
+
 }
