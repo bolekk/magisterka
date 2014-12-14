@@ -34,9 +34,10 @@ public class Main {
 
   private static final int maxIters = 30;
   private static final double epsilon = 0.0005;
+  private static final int runs = 10;
   private static final Random random = new Random(System.currentTimeMillis());
 
-  private static final int nPeers = 1000;
+  private static final int nPeers = 500;
   private static final int timeSlots = 24;
   private static final int replicationSlots = 5;
 
@@ -45,13 +46,14 @@ public class Main {
      * Factories used in the experiment.
      */
     List<PeerFactory> factories = new ArrayList<>();
-    final int expectedCoverage = 4;
-    factories.add(new UniformPeerFactory(expectedCoverage, random.nextLong()));
-    factories.add(new UniformContPeerFactory(expectedCoverage, random
-        .nextLong()));
-    factories.add(new NapsterPeerFactory(random.nextLong()));
-    factories.add(new CorpUniformPeerFactory(random.nextLong()));
-    final double paretoShape = 0.1;
+    // final int expectedCoverage = 4;
+    // factories.add(new UniformPeerFactory(expectedCoverage,
+    // random.nextLong()));
+    // factories.add(new UniformContPeerFactory(expectedCoverage, random
+    // .nextLong()));
+    // factories.add(new NapsterPeerFactory(random.nextLong()));
+    // factories.add(new CorpUniformPeerFactory(random.nextLong()));
+    final double paretoShape = 2.0;
     factories.add(new CorpParetoPeerFactory(paretoShape, random.nextLong()));
 
     /*
@@ -65,11 +67,10 @@ public class Main {
     measures.add(new StrongMeasure());
 
     /*
-     * System measures used in the experiment.
+     * System measure used in the experiment.
      */
-    List<SystemMeasure> sysMeasures = new ArrayList<>();
-    sysMeasures.add(new BasicSystemMeasure(false));
-    sysMeasures.add(new EquitableSystemMeasure(false));
+    SystemMeasure sysMeasure = new BasicSystemMeasure(false);
+    // SystemMeasure sysMeasure = new EquitableSystemMeasure(false);
 
     /*
      * Private measure is constant.
@@ -79,38 +80,78 @@ public class Main {
     for (PeerFactory factory : factories) {
       // games
       for (Measure measure : measures) {
-        List<Peer> peers = factory.generatePeers(nPeers, timeSlots,
-            replicationSlots, privateMeasure, measure);
-        Simulation sim = new GameSimulation(peers);
-        runAndPrint(factory.getName(), measure.getName(), sim, sysMeasures);
+        List<Result> results = new ArrayList<>();
+        for (int i = 0; i < runs; i++) {
+          List<Peer> peers = factory.generatePeers(nPeers, timeSlots,
+              replicationSlots, privateMeasure, measure);
+          Simulation sim = new GameSimulation(peers);
+          results.add(runSingle(sim, sysMeasure));
+        }
+        printResults(results, factory.getName(), measure.getName(), sysMeasure.getName());
       }
       // random (measure is irrelevant)
-      List<Peer> peers = factory.generatePeers(nPeers, timeSlots,
-          replicationSlots, new SumMeasure(), new SumMeasure());
-      Simulation sim = new RandomizedSimulation(peers, random.nextLong());
-      runAndPrint(factory.getName(), "Random", sim, sysMeasures);
+      List<Result> results = new ArrayList<>();
+      for (int i = 0; i < runs; i++) {
+        List<Peer> peers = factory.generatePeers(nPeers, timeSlots,
+            replicationSlots, new SumMeasure(), new SumMeasure());
+        Simulation sim = new RandomizedSimulation(peers, random.nextLong());
+        results.add(runSingle(sim, sysMeasure));
+      }
+      printResults(results, factory.getName(), "Random", sysMeasure.getName());
     }
   }
 
-  private static void runAndPrint(String factoryName, String peerMeasureName,
-      Simulation sim, List<SystemMeasure> sysMeasures) {
-    SystemMeasure firstMeasure = sysMeasures.get(0);
+  private static Result runSingle(Simulation sim, SystemMeasure sysMeasure) {
+    Result res = new Result();
     double lastVal = 2.0;
     int iter = 0;
     for (; iter < maxIters; iter++) {
       sim.run(1, true);
-      double currVal = firstMeasure.evaluateNormalized(sim);
+      double currVal = sysMeasure.evaluateNormalized(sim);
       if (Math.abs(currVal - lastVal) < epsilon) {
         break;
       }
       lastVal = currVal;
     }
-
-    System.out.println("---- FACTORY: " + factoryName + " ---- PEER MEASURE: "
-        + peerMeasureName + " ---- ITERATIONS: " + iter);
-    for (SystemMeasure sysMeasure : sysMeasures) {
-      System.out.println("SYS MEASURE (" + sysMeasure.getName() + ") = "
-          + sysMeasure.evaluateNormalized(sim));
+    res.iters = iter;
+    res.score = sysMeasure.evaluateNormalized(sim);
+    return res;
+  }
+  
+  private static void printResults(List<Result> results, String factoryName, String peerMeasureName,
+      String sysMeasureName) {
+    List<Double> scores = new ArrayList<>();
+    List<Double> iters = new ArrayList<>();
+    for (Result res : results) {
+      scores.add(res.score);
+      iters.add((double)res.iters);
     }
+    System.out.println("-- FACTORY: " + factoryName + " ---- PEER MEASURE: " + peerMeasureName);
+    System.out.println("     SYS MEASURE (" + sysMeasureName + "): Average: " + getAverage(scores) +
+        " Std Deviation: " + getStdDeviation(scores));
+    System.out.println("     ITERATIONS: Average: " + getAverage(iters) + " Std Deviation: " +
+        getStdDeviation(iters));
+  }
+
+  private static double getStdDeviation(List<Double> results) {
+    double mean = getAverage(results);
+    double res = 0.0;
+    for (Double d : results) {
+      res += Math.pow(mean - d, 2.0);
+    }
+    return Math.sqrt(res / results.size());
+  }
+
+  private static double getAverage(List<Double> results) {
+    double res = 0.0;
+    for (Double d : results) {
+      res += d;
+    }
+    return res / results.size();
+  }
+
+  static class Result {
+    public int iters;
+    public double score;
   }
 }
