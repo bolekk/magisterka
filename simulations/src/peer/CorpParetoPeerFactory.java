@@ -1,7 +1,6 @@
 package peer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -12,7 +11,8 @@ import com.google.common.base.Preconditions;
 public class CorpParetoPeerFactory implements PeerFactory {
 
   private final Random random;
-  private List<Integer> perm = new ArrayList<>();
+  private int[] perm = { 0, 15, 7, 12, 1, 16, 8, 13, 2, 17, 9, 14, 3, 18, 10,
+      4, 19, 11, 5, 20, 6, 21, 22, 23 };
   private double paretoShape;
 
   public CorpParetoPeerFactory(double paretoShape, long randomSeed) {
@@ -23,11 +23,6 @@ public class CorpParetoPeerFactory implements PeerFactory {
   @Override
   public List<Peer> generatePeers(int nPeers, int T, int slots,
       Measure privateMeasure, Measure acceptanceMeasure) {
-    for (int i = 0; i < T; i++) {
-      perm.add(i);
-    }
-    Collections.shuffle(perm);
-
     List<Peer> peers = new ArrayList<>();
 
     addRandomPeers(peers, (int) (nPeers * 0.1), T, 0.316, slots,
@@ -75,7 +70,7 @@ public class CorpParetoPeerFactory implements PeerFactory {
 
   // [0, T-1]
   private int selectFirst(int T) {
-    return perm.get((int) (Math.round(getRandomPareto(paretoShape)) % T));
+    return perm[(int) (Math.round(getRandomPareto(paretoShape)) % T)];
   }
 
   @Override
@@ -89,11 +84,8 @@ public class CorpParetoPeerFactory implements PeerFactory {
   public static void main(String[] args) {
     final int T = 24;
     final double shape = 1.0;
-    CorpParetoPeerFactory fac = new CorpParetoPeerFactory(shape, System.currentTimeMillis());
-    for (int i = 0; i < T; i++) {
-      fac.perm.add(i);
-    }
-    Collections.shuffle(fac.perm);
+    CorpParetoPeerFactory fac = new CorpParetoPeerFactory(shape,
+        System.currentTimeMillis());
     int[] res = new int[T];
     for (int i = 0; i < 100000; i++) {
       int x = fac.selectFirst(T);

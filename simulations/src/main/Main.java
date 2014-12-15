@@ -37,7 +37,7 @@ public class Main {
   private static final int runs = 10;
   private static final Random random = new Random(System.currentTimeMillis());
 
-  private static final int nPeers = 500;
+  private static final int nPeers = 400;
   private static final int timeSlots = 24;
   private static final int replicationSlots = 5;
 
@@ -46,14 +46,14 @@ public class Main {
      * Factories used in the experiment.
      */
     List<PeerFactory> factories = new ArrayList<>();
-    // final int expectedCoverage = 4;
+    //final int expectedCoverage = 12;
     // factories.add(new UniformPeerFactory(expectedCoverage,
     // random.nextLong()));
-    // factories.add(new UniformContPeerFactory(expectedCoverage, random
+    //factories.add(new UniformContPeerFactory(expectedCoverage, random
     // .nextLong()));
     // factories.add(new NapsterPeerFactory(random.nextLong()));
     // factories.add(new CorpUniformPeerFactory(random.nextLong()));
-    final double paretoShape = 2.0;
+    final double paretoShape = 0.1;
     factories.add(new CorpParetoPeerFactory(paretoShape, random.nextLong()));
 
     /*

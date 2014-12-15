@@ -583,33 +583,79 @@ Another interesting deployment is presented in \cite{hetero}. A backup system si
 
 Let us start with discussing the environment of our simulations and all the parameters that we use. Every system simulation consists of a finite number of rounds. In every round, each peer ranks and sorts all other peers according to its private measure. As discussed earlier, for the purpose of our simulations, all peers are using the selfish private measure (see Section \ref{decentralized}). After potential replicas (candidates) are sorted, the peer iterates over them starting from the best one (according to the private measure). Peer sends a replication request in one of two cases: (a) the candidate received a higher valuation than the current replica with lowest valuation or (b) the requesting peer still has less than $K$ replicators, where $K$ is the number of replication slots.\\
 
-When it comes to peer parameters, we set the number of time slots $T=24$ to reflect the daily patterns of real-life system members (one time slot corresponds to one hour in a day). The number of replication slots $K$ varies between experiments but is never greater than 5. The number of peers used in every simulation is equal to 1000.\\
+When it comes to peer parameters, we set the number of time slots $T=24$ to reflect the daily patterns of real-life system members (one time slot corresponds to one hour in a day). The number of replication slots $K$ varies between experiments but is never greater than 5. The number of peers used in every simulation is equal to 1000. Every experiment is repeated 10 times and average values together with standard deviations are calculated.\\
 
 We know from Chapter 3 that using private measures that rely on current state of the system does not guarantee convergence of the whole simulation. That is why we stop our simulations whenever difference in the value of system measure between two consecutive rounds in less than 0.0005. Moreover, we also limit the number of rounds by 30 but it turns out that the round limit is never reached.\\
 
-Acceptance measures used in the experiments are the three measures defined in Chapter 3, namely $AM_{weak}$, $AM_{sum}$ and $AM_{strong}$. The first one, $AM_{weak}$ is not a truthful measure so the results when it is used are not sustainable in a real setting. We still put it on graphs because we think it is interesting to compare what could be possible to achieve when members are not selfish. We ran experiment using a few more measures that linear combinations of $AM_{sum}$ and $AM_{strong}$ but the results were always between these two. We decided not to put them on graphs to keep the images cleaner. Finally, we ran one additional simulation - a random one. In that case, every peer is randomly assigned $K$ other peers from the system. Please not that such scenario is also unsustainable and serves only as an interesting comparison.\\
+Acceptance measures used in the experiments are the three measures defined in Chapter 3, namely $AM_{weak}$, $AM_{sum}$ and $AM_{strong}$. The first one, $AM_{weak}$ is not a truthful measure so the results when it is used are not sustainable in a real setting. We still put it on graphs because we think it is interesting to compare what could be possible to achieve when members are not selfish. We run experiments using two more measures that are linear combinations of $AM_{sum}$ and $AM_{strong}$:
+\begin{itemize}
+\item $AM_{half-strong} = 2 \cdot AM_{strong} + AM_{weak}$
+\item $AM_{half-weak} = AM_{strong} + 2 \cdot AM_{weak}$
+\end{itemize}
+We put them on graphs only when the results are valuable but most of the time omit them to keep the graphs cleaner. Finally, we run one additional simulation - a random one. In that case, every peer is randomly assigned $K$ other peers from the system. Please note that such scenario is also unsustainable and serves only as an interesting comparison.\\
 
-We use four different arrangements of peers' availabilities.\\
+We use four different test scenarios with the following arrangements of peers' availabilities.\\
 
-1. {\bf Uniform}. For every peer, we set each time slot to available with probability $\frac{n}{24}$ where $n$ is a parameter. In the resulting peer set, every peer is available on average in $n$ slots out of 24.\\
+1. {\bf Uniform(n)}. For every peer, we set each time slot to available with probability $\frac{n}{24}$. In the resulting peer set, every peer is available on average in $n$ slots out of 24. The parameter $n$ is one of $\{4,6,8,10,12\}$. This test case is an attempt to simulate the probabilistic model, where every peer has a fixed probability of being available or not at any given time.\\
 
-2. {\bf Uniform continuous}. For every peer, we randomly select a time slot $t$ and make this peer available for $n$ consecutive time slots starting at $t$, where $n$ is a parameter. \\
+2. {\bf Uniform continuous(n)}. For every peer, we randomly select a time slot $t$ and make this peer available for $n$ consecutive time slots starting at $t$ (cyclically wrapped if necessary), where $n\in\{4,6,8,10,12\}$. This test case aims at reflecting diurnal patterns of real users, that is being available for some continuous part of day (e.g. at work) and unavailable for the rest of the day.\\
 
-3. {\bf Napster-like}. This setting is based on data presented in the previous section that is coming from Napster/Gnutella analyses. Here 20\% of peers is available in 20 random slots. 30\% of peers is available in 2 or 1 slots. The rest of the peers (50\%) are available in exactly one random slot out of 24.\\
+3. {\bf Napster}. This setting is based on data presented in the previous section that is coming from Napster/Gnutella analyses. Here 20\% of peers is available on average in 20 random slots. 30\% of peers is available on average in 2 random slots. The rest of the peers (50\%) are available in exactly one random slot out of 24. In this scenario we test behavior close to this of P2P file-sharing networks' users.\\
 
-4. {\bf Corporate.} The corporate setting is taken from \cite{krz} and is supposed to better reflect the real time zone distribution, which is not uniform. All peers are available in a continuous interval of slots, of which 10\% is available in 8 slots, 25\%  in 7 slots, 30\% in 6 slots and the remaining 35\% in only 2 slots. Furthermore, the starting slot is chosen randomly from a Pareto distribution with the shape parameter equal to $\alpha$ for $\alpha \in \{0.1, 0.5, 1.0, 1.5, 2.0\}$\\
+4. {\bf Corporate($\alpha$)}. The corporate setting is taken from \cite{krz} and is supposed to better reflect the real time zone distribution, which is not uniform. All peers are available in a continuous interval of slots, of which 10\% is available in 8 slots, 25\%  in 7 slots, 30\% in 6 slots and the remaining 35\% in only 2 slots. Furthermore, the starting slot is chosen randomly from a Pareto distribution with the shape parameter equal to $\alpha$ for $\alpha \in \{0.1, 0.5, 1.0, 1.5, 2.0\}$. Additionally, the list of time-slots is randomly permuted before selecting slots.\\
 
 \subsection{Results}
 
-Results for the uniform continuous setting are depicted in figure \ref{uni_cont_3}.\\
+Results for the {\bf uniform} setting are TODO.\\
+
+Results for the {\bf uniform continuous} setting are depicted in figures \ref{uni_cont_1}, \ref{uni_cont_3} and \ref{uni_cont_5}. \\
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.55]{uni_cont_3.pdf}
-\caption{Results for uniform continuous setting with $K=3$ replication slots.}
+\includegraphics[scale=0.5]{graphs/uni_cont_1.pdf}
+\caption{Results for the uniform continuous setting with $K=1$ replication slots.}
+\label{uni_cont_1}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{graphs/uni_cont_3.pdf}
+\caption{Results for the uniform continuous setting with $K=3$ replication slots.}
 \label{uni_cont_3}
 \end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{graphs/uni_cont_5.pdf}
+\caption{Results for the uniform continuous setting with $K=5$ replication slots. (TODO!)}
+\label{uni_cont_5}
+\end{figure}
+
+Napster scenario is shown on figure \ref{napster}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{graphs/napster.pdf}
+\caption{Results for Napster}
+\label{napster}
+\end{figure} 
  
+In the last of our test scenarios, named {\it corporate}, we test five values for the distribution shape parameter $\alpha$. 
+ 
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{graphs/pareto_5_slots.pdf}
+\caption{Results for Pareto with K = 5 replication slots.}
+\label{pareto_5_slots}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{graphs/corp.pdf}
+\caption{Results for Pareto (FIXME!)}
+\label{pareto_5_slots}
+\end{figure}
+
 %Other notes and ideas
 %http://en.wikipedia.org/wiki/CAP_theorem
 
