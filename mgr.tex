@@ -606,9 +606,32 @@ We use four different test scenarios with the following arrangements of peers' a
 
 \subsection{Results}
 
-Results for the {\bf uniform} setting are TODO.\\
+Results for the {\bf uniform} setting are shown on figures \ref{uniform_1}, \ref{uniform_3} and \ref{uniform_5}.\\
 
-Results for the {\bf uniform continuous} setting are depicted in figures \ref{uni_cont_1}, \ref{uni_cont_3} and \ref{uni_cont_5}. \\
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{graphs/uniform_1.pdf}
+\caption{Results for the uniform setting with $K=1$ replication slots.}
+\label{uniform_1}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{graphs/uniform_3.pdf}
+\caption{Results for the uniform setting with $K=3$ replication slots.}
+\label{uniform_3}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{graphs/uniform_5.pdf}
+\caption{Results for the uniform setting with $K=5$ replication slots.}
+\label{uniform_5}
+\end{figure}
+
+
+
+Results for the {\bf uniform continuous} setting are depicted in figures \ref{uni_cont_1}, \ref{uni_cont_3} and \ref{uni_cont_5}. In the \\
 
 \begin{figure}[h]
 \centering
@@ -627,7 +650,7 @@ Results for the {\bf uniform continuous} setting are depicted in figures \ref{un
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{graphs/uni_cont_5.pdf}
-\caption{Results for the uniform continuous setting with $K=5$ replication slots. (TODO!)}
+\caption{Results for the uniform continuous setting with $K=5$ replication slots.}
 \label{uni_cont_5}
 \end{figure}
 
@@ -636,7 +659,7 @@ Napster scenario is shown on figure \ref{napster}.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{graphs/napster.pdf}
-\caption{Results for Napster}
+\caption{Results for the Napster setting.}
 \label{napster}
 \end{figure} 
  
@@ -644,15 +667,15 @@ In the last of our test scenarios, named {\it corporate}, we test five values fo
  
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{graphs/pareto_5_slots.pdf}
-\caption{Results for Pareto with K = 5 replication slots.}
+\includegraphics[scale=0.5]{graphs/corp_5.pdf}
+\caption{Results for the corporate setting with K = 5 replication slots.}
 \label{pareto_5_slots}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{graphs/corp.pdf}
-\caption{Results for Pareto (FIXME!)}
+\includegraphics[scale=0.5]{graphs/corp_alpha_1.pdf}
+\caption{Results for the corporate setting with shape parameter $\alpha=1.0$.}
 \label{pareto_5_slots}
 \end{figure}
 
