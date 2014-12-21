@@ -334,7 +334,7 @@ Gossiping is used in Nebulostore to discover nodes that are best for establishin
 
 In this chapter we analyze various approaches to data replication in peer-to-peer systems, categorized with respect to the degree of centralization. We begin with some general system assumptions and a discussion regarding the model of peer availability. Afterwards, we present some of the existing results and also propose a new approach.\\
 
-\section{General assumptions and system measures}\label{assumptions}
+\section{General assumptions and system measures}\label{sect:assumptions}
 
 We would like to make a few assumptions about our system that are going to be used throughout this work.\\
 
@@ -342,7 +342,7 @@ We would like to make a few assumptions about our system that are going to be us
 This assumption lets us focus only on peers' availabilities as a single parameter. In case a real user needs to replicate more data, it can have multiple identities in the system.\\
 
 {\bf Truthfulness.} No peer advertises higher availability than it actually has.\\
-It is relatively easy for the system to verify if a peer is actually available in a given period of time or in a given percentage of time. Dishonest peers could be removed from the system. In some scenarios peers might also benefit from advertising lower availabilities than they actually have and it is very hard to verify that. We cope with this problem by selecting appropriate measures that discourage such behavior (see Section \ref{decentralized}).\\
+It is relatively easy for the system to verify if a peer is actually available in a given period of time or in a given percentage of time. Dishonest peers could be removed from the system. In some scenarios peers might also benefit from advertising lower availabilities than they actually have and it is very hard to verify that. We cope with this problem by selecting appropriate measures that discourage such behavior (see Section \ref{sect:decentralized}).\\
 
 {\bf Membership transparency.} Everyone knows about all other peers existing in the system. We assume existence of a centralized login server, where every member of the system registers itself and can poll the server for information about peers with required availabilities.\\
 
@@ -390,7 +390,7 @@ Total data availability of a single peer $p_i$ belonging to a replication clique
 $$av_{total}(p_i) = 1 - \prod_{p \in Q} (1 - av(p))$$
 \end{definition}
 
-\subsection{Time-slot model}
+\subsection{Time-slot model}\label{sect:timeslot}
 
 Contrary to the probabilistic model, the time-slot model divides time into discrete intervals of equal length and assumes that each peer has a cyclically-repeating pattern of being available or not during the whole interval.\\
 
@@ -427,7 +427,7 @@ $$av_{total}(p) = av(p) \cup av(p_1) \cup \ldots \cup av(p_k)$$
 where all peers $p_1\ldots p_k$ are currently replicating $p$'s data.
 \end{definition}
  
-\section{Centralized approach}
+\section{Centralized approach}\label{sect:centralized}
 
 % najpierw kliki - FPR
 
@@ -462,15 +462,13 @@ The FPR problem aims at achieving a state with perfect availability and minimize
 
 An instance of the {\bf Uniform Peer Replication} (UPR) problem consists of the set of peers $\{p_1,\ldots,p_n\}$ in a time-slot model with $T$ intervals. Each peer has exactly $K$ replication slots available. The optimization goal is to assign exactly $K$ peers (replicas) to every peer so that each peer replicates exactly $K$ other peers and the sum of all resulting availabilities is maximized.\\
 
-\textcolor{red}{TODO: NP-trudnosc. Podobny do 3-dimensional assignment.}
-
-\section{De-centralized approach}\label{decentralized}
+\section{De-centralized approach}\label{sect:decentralized}
 
 Results presented in the previous section suggest a conclusion that centralized optimization approaches to the replication problem can be computationally-heavy and also impractical for a few other reasons. Firstly, when a new peer joins the system or an existing peer decides to leave, the contracts need to be re-calculated. Secondly, if our goal is to maximize the overall state of the system, not considering differences between peers, highly-available peers have no incentives to be highly-available any more. They will artificially lower their availability and rely on the system to provide them with appropriate replicators, which leads to a great loss of overall quality.\\
 
 We would like to investigate a new, decentralized approach where peers communicate with one another and agree or disagree to replicate one another's data. Before that, let us briefly discuss an idea of a completely de-centralized game between peers proposed by \cite{krz} that works as follows. The set of players is equal to the set of peers and every player (peer) is selfish and thus interested only in maximizing availability of its own data. Game consists of an unlimited number of rounds. In each round, every peer inquires another peer of its choice to replicate its data (proposes a {\it replication contract}). In the subsequent rounds every peer answers to contract proposals (either accepts or rejects) and may also withdraw some of the existing contracts.\\
 
-Our approach is based on this distributed game model but with a few differences. We decided that we would not aim at complete decentralization but allow a single central node to hold some valuable meta-data. As we mentioned in Section \ref{assumptions}, this central node will control {\bf truthfulness} and will ensure {\bf membership transparency} of the system.\\
+Our approach is based on this distributed game model but with a few differences. We decided that we would not aim at complete decentralization but allow a single central node to hold some valuable meta-data. As we mentioned in Section \ref{sect:assumptions}, this central node will control {\bf truthfulness} and will ensure {\bf membership transparency} of the system.\\
 
 Since the time-slot model is not symmetric with respect to relative peers' contributions, we will not be relying on the idea of clique-based replication. Instead, every peer will do two distinct tasks: (a) ask other peers to replicate its data and (b) reply to replication requests from other peers with either acceptance or rejection. We do not require that if peer A replicates B's data, B has to replicate A's data. Thus, peers do not care whose data they replicate and their only concern is who is replicating their data. Peers are allowed to issue replication requests to any other peer at any point of time. To simplify, we assume that every peer has its own {\bf private measure} to rank other peers and uses the resulting order to select the best ones to enquire.\\
 
@@ -538,8 +536,6 @@ It is easy to observe that $AM_{sum}$ is some kind of a borderline measure. If t
 \label{fig:measures}
 \end{figure}
 
-\textcolor{red}{TODO: Analiza najgorszego przypadku, jakie peery moga miec availability zeby caly system i tak byl slaby}
-
 %
 %
 %  ----------- CHAPTER 4 -----------------------------------------------
@@ -548,8 +544,10 @@ It is easy to observe that $AM_{sum}$ is some kind of a borderline measure. If t
 
 \chapter{Experiments}\label{chap:experiments}
 
-Last chapter of this work is devoted to analyzing outcomes of the simulations of various replicating strategies that we discussed in Chapter 3.
-Before conducting any experiments, we need to know what are the expected peers' capabilities in terms of disk space and availability. When it comes to disk space, authors of \cite{farsite} suggest that disk capacities are increasing faster than storage needs. In early 2000s estimated percentage of unused disk space on an average corporate workstation was above 50\% \cite{farsite} and this trend seems to continue \cite{hetero}. That is why we can safely assume that space requirements for data replication are easily fulfilled. On the other hand, peer availability is a more complex issue, which we need to research more thoroughly before formulating any assumptions. \\
+Last two chapters of this work are devoted to analyzing outcomes of the simulations of various replicating strategies that we discussed in Chapter 3.
+Before conducting any experiments, we need to know what are the expected peers' capabilities in terms of disk space and availability. When it comes to disk space, disk capacities are increasing faster than storage needs for average workstations. In early 2000s estimated percentage of unused disk space on an average corporate workstation was above 50\% \cite{farsite} and this trend seems to continue \cite{hetero}. That is why we can safely assume that space requirements for data replication are easily fulfilled. On the other hand, peer availability is a more complex issue, which we need to research more thoroughly before formulating any assumptions.\\
+
+In Chapter 4 we present our methodology, our data models and the results of conducted experiments. Chapter 5 is devoted to conclusions and summary.\\
 
 \section{Peer behavior in real systems}
 
@@ -579,20 +577,22 @@ Another interesting deployment is presented in \cite{hetero}. A backup system si
 
 \section{Simulations}
 
-\subsection{Configuration}
+\subsection{Configuration}\label{sect:configuration}
 
-Let us start with discussing the environment of our simulations and all the parameters that we use. Every system simulation consists of a finite number of rounds. In every round, each peer ranks and sorts all other peers according to its private measure. As discussed earlier, for the purpose of our simulations, all peers are using the selfish private measure (see Section \ref{decentralized}). After potential replicas (candidates) are sorted, the peer iterates over them starting from the best one (according to the private measure). Peer sends a replication request in one of two cases: (a) the candidate received a higher valuation than the current replica with lowest valuation or (b) the requesting peer still has less than $K$ replicators, where $K$ is the number of replication slots.\\
+Let us start with discussing the environment of our simulations and all the parameters that we use. Every system simulation consists of a finite number of rounds. In every round, each peer ranks and sorts all other peers according to its private measure. As discussed earlier, for the purpose of our simulations, all peers are using the selfish private measure (see Section \ref{sect:decentralized}). After potential replicas (candidates) are sorted, the peer iterates over them starting from the best one (according to the private measure). Peer sends a replication request in one of two cases: (a) the candidate received a higher valuation than the current replica with lowest valuation or (b) the requesting peer still has less than $K$ replicators, where $K$ is the number of replication slots.\\
 
-When it comes to peer parameters, we set the number of time slots $T=24$ to reflect the daily patterns of real-life system members (one time slot corresponds to one hour in a day). The number of replication slots $K$ varies between experiments but is never greater than 5. The number of peers used in every simulation is equal to 1000. Every experiment is repeated 10 times and average values together with standard deviations are calculated.\\
+When it comes to peer parameters, we set the number of time slots $T=24$ to reflect the daily patterns of real-life system members (one time slot corresponds to one hour in a day). The number of replication slots $K$ varies between experiments but is always between 1 and 5. The number of peers used in every simulation is 1000. Every experiment is repeated 10 times and average values together with standard deviations are calculated.\\
 
-We know from Chapter 3 that using private measures that rely on current state of the system does not guarantee convergence of the whole simulation. That is why we stop our simulations whenever difference in the value of system measure between two consecutive rounds in less than 0.0005. Moreover, we also limit the number of rounds by 30 but it turns out that the round limit is never reached.\\
+We know from Chapter 3 that using private measures that rely on current state of the system does not guarantee convergence of the whole simulation. That is why we stop our simulations whenever difference in the value of system measure between two consecutive rounds in less than 0.0005. Moreover, we also limit the number of rounds by 30 but it turns out that the round limit is almost never reached.\\
 
-Acceptance measures used in the experiments are the three measures defined in Chapter 3, namely $AM_{weak}$, $AM_{sum}$ and $AM_{strong}$. The first one, $AM_{weak}$ is not a truthful measure so the results when it is used are not sustainable in a real setting. We still put it on graphs because we think it is interesting to compare what could be possible to achieve when members are not selfish. We run experiments using two more measures that are linear combinations of $AM_{sum}$ and $AM_{strong}$:
+Acceptance measures used in the experiments are the three measures defined in Chapter 3, namely $AM_{weak}$, $AM_{sum}$ and $AM_{strong}$. The first one, $AM_{weak}$ is not a truthful measure so the results that it gives are not sustainable in a real setting. We still put it on graphs because we think it is interesting to compare what could be possible to achieve if members were not selfish. We run experiments using two more measures that are linear combinations of $AM_{sum}$ and $AM_{strong}$:
 \begin{itemize}
 \item $AM_{half-strong} = 2 \cdot AM_{strong} + AM_{weak}$
 \item $AM_{half-weak} = AM_{strong} + 2 \cdot AM_{weak}$
 \end{itemize}
-We put them on graphs only when the results are valuable but most of the time omit them to keep the graphs cleaner. Finally, we run one additional simulation - a random one. In that case, every peer is randomly assigned $K$ other peers from the system. Please note that such scenario is also unsustainable and serves only as an interesting comparison.\\
+We discovered that these two linear combinations behave as expected, i.e. results of experiments with $AM_{half-strong}$ lie between those of $AM_{strong}$ and $AM_{sum}$. Similarly, results of experiments with $AM_{half-weak}$ lie between those of $AM_{weak}$ and $AM_{sum}$. We decided not to put them on graphs to keep the images cleaner. Two measures that are truthful, namely $AM_{sum}$ and $AM_{strong}$ are the most interesting ones from the perspective of system creators.\\
+
+Finally, we run one additional simulation - a random one. In that case, every peer is randomly assigned $K$ other peers from the system. Please note that such scenario is also unsustainable and serves only as an interesting comparison.\\
 
 We use four different test scenarios with the following arrangements of peers' availabilities.\\
 
@@ -602,11 +602,13 @@ We use four different test scenarios with the following arrangements of peers' a
 
 3. {\bf Napster}. This setting is based on data presented in the previous section that is coming from Napster/Gnutella analyses. Here 20\% of peers is available on average in 20 random slots. 30\% of peers is available on average in 2 random slots. The rest of the peers (50\%) are available in exactly one random slot out of 24. In this scenario we test behavior close to this of P2P file-sharing networks' users.\\
 
-4. {\bf Corporate($\alpha$)}. The corporate setting is taken from \cite{krz} and is supposed to better reflect the real time zone distribution, which is not uniform. All peers are available in a continuous interval of slots, of which 10\% is available in 8 slots, 25\%  in 7 slots, 30\% in 6 slots and the remaining 35\% in only 2 slots. Furthermore, the starting slot is chosen randomly from a Pareto distribution with the shape parameter equal to $\alpha$ for $\alpha \in \{0.1, 0.5, 1.0, 1.5, 2.0\}$. Additionally, the list of time-slots is randomly permuted before selecting slots.\\
+4. {\bf Corporate($\alpha$)}. The corporate setting is taken from \cite{krz} and is supposed to better reflect the real time zone distribution, which is not uniform. All peers are available in a continuous interval of slots, of which 10\% is available in 8 slots, 25\%  in 7 slots, 30\% in 6 slots and the remaining 35\% in only 2 slots. Furthermore, the starting slot is chosen randomly from a Pareto distribution with the shape parameter equal to $\alpha$ for $\alpha \in \{0.1, 0.5, 1.0, 1.5, 2.0\}$ and the number of replication slots is $K=5$. Additionally, the list of time slots is initially permuted to reflect the fact that most of the Internet traffic comes from four regions that are USA, China, Europe and India. This is different to \cite{krz} where the permutation is randomly chosen before each simulation. First four positions of our permutation are chosen to reflect relative differences of average time zones in these four regions ordered as above. The permutation (of numbers from 0 to 23) is as follows: $\{ 0, 15, 7, 12, 1, 16, 8, 13, 2, 17, 9, 14, 3, 18, 10, 4, 19, 11, 5, 20, 6, 21, 22, 23\}$.\\
 
 \subsection{Results}
 
-Results for the {\bf uniform} setting are shown on figures \ref{uniform_1}, \ref{uniform_3} and \ref{uniform_5}.\\
+Results for the {\bf uniform} setting are shown on figures \ref{uniform_1}, \ref{uniform_3} and \ref{uniform_5}. In the first test case (figure \ref{uniform_1}), with only one replication slot per peer, random assignment outperforms every other one. When $K=3$ (figure \ref{uniform_3}), $AM_{weak}$ is clearly the best but still untruthful. $AM_{sum}$ behaves similarly to a random assignment with higher results for simulations with average availability of 8 slots or more. Finally, the graph for highest number of time slots tested ($K=5$, figure \ref{uniform_5}) shows that with average availabilities of $\frac{1}{3}$ or more, all measures behave significantly better than random assignments and also very similarly to one another.\\
+
+Randomization performs relatively well in case of $K=1$. When all peers' availabilities are randomly selected with exact same parameters, there is a high chance that any two peers will be a good fit for each other. With higher values of $K$, groups of three or more peers start to cover most of the slots and methods smarter than randomization produce better fits that lead to more coverage. That is why for $K\geqslant3$, measure $AM_{sum}$ is a better choice in the uniform test scenario.\\
 
 \begin{figure}[h]
 \centering
@@ -630,8 +632,9 @@ Results for the {\bf uniform} setting are shown on figures \ref{uniform_1}, \ref
 \end{figure}
 
 
+Results for the {\bf uniform continuous} setting are depicted in figures \ref{uni_cont_1}, \ref{uni_cont_3} and \ref{uni_cont_5}. For $K=1$ (figure \ref{uni_cont_1}) we can see that $AM_{strong}$ gives almost the same results as randomization and they both significantly outperform $AM_{sum}$ and $AM_{weak}$. For $K=3$ and $K=5$, randomization is significantly worse that everything else and $AM_{strong}$ provides the best overall system availability.\\
 
-Results for the {\bf uniform continuous} setting are depicted in figures \ref{uni_cont_1}, \ref{uni_cont_3} and \ref{uni_cont_5}. In the \\
+The reason why randomization performs well in $K=1$ case might be the same as in the previous simulation. In the other hand, it is worth noting that $AM_{strong}$ performs significantly better than $AM_{sum}$ for the uniform continuous setting. It seems that overall gains from highly-available peers being able to find partners with complementing availability outweigh losses of poorly-available ones.\\
 
 \begin{figure}[h]
 \centering
@@ -654,7 +657,7 @@ Results for the {\bf uniform continuous} setting are depicted in figures \ref{un
 \label{uni_cont_5}
 \end{figure}
 
-Napster scenario is shown on figure \ref{napster}.
+The analysis of the {\bf Napster} scenario is shown on figure \ref{napster}. In this case, peers' availabilities are constant and we are able to change only one parameter, which is K. The results are not favorable. The untruthful measure $AM_{weak}$ gives great results, followed by mediocre results of random assignment. Both $AM_{sum}$ and $AM_{strong}$ perform poorly giving only around 50\% of overall system availability in the highest replication case of $K=5$.\\
 
 \begin{figure}[h]
 \centering
@@ -663,27 +666,31 @@ Napster scenario is shown on figure \ref{napster}.
 \label{napster}
 \end{figure} 
  
-In the last of our test scenarios, named {\it corporate}, we test five values for the distribution shape parameter $\alpha$. 
+In the last of our test scenarios, {\bf corporate}, we test five values for the distribution shape parameter $\alpha$ (figure \ref{corp_5}). The best results are achieved when $AM_{weak}$ is used but $AM_{sum}$ also gives a relatively high system availability. Figure \ref{corp_alpha_1} is an additional experiment to verify behavior for lower values of parameter K (with $\alpha=1.0$). The outcome is consistent with the previous one --- $AM_{sum}$ and $AM_{weak}$ outperform $AM_{strong}$ and randomization. All of these results are positive --- $AM_{sum}$ seems to be the best choice for the scenarios with availability distributions similar to the corporate one.\\
  
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{graphs/corp_5.pdf}
 \caption{Results for the corporate setting with K = 5 replication slots.}
-\label{pareto_5_slots}
+\label{corp_5}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{graphs/corp_alpha_1.pdf}
 \caption{Results for the corporate setting with shape parameter $\alpha=1.0$.}
-\label{pareto_5_slots}
+\label{corp_alpha_1}
 \end{figure}
 
-%Other notes and ideas
-%http://en.wikipedia.org/wiki/CAP_theorem
+The average standard deviation for all experiments was 0.007 and almost never exceeded 0.02.\\
 
 \chapter{Summary and Conclusions}\label{chap:conclusions}
 
+Throughout Chapters 3 and 4, we analyzed the problem of assigning replicas to peers in order to achieve highest overall system availability. We introduced the time slot model, in which time is divided into a number of discrete intervals and peers can be either available or not during the whole interval (section \ref{sect:timeslot}). We agreed on a number of characteristics that systems we analyze should have, such as uniformity, truthfulness and membership transparency (section \ref{sect:assumptions}). Later, we elaborated on potential algorithmic methods of computing optimal replication schemes  (section \ref{sect:centralized}) and argued that they are computationally hard and also impractical for a number of other reasons. Finally, we introduced the model for decentralized data replication between peers that is based on assigning relative peer strength using various measures (section \ref{sect:decentralized}). An important concept of truthfulness was introduced in order to magnify the importance of measures that will not lead to incentive loss when used in a real system. We came up with four different scenarios of availability distribution among peers and tested our proposed measures using them (section \ref{sect:configuration}).\\
+
+The main conclusion based on the results presented in the previous chapter is that we are able to construct truthful measures that perform in most cases much better than random assignments and that give reasonable overall system availability. In two out of four scenarios that we tested, all peers were equal, i.e. randomly selected using the same distribution. Measures proposed by us caused significant improvements over randomized replica assignment provided that the number of replication slots (K) was at least 3. On the other hand, we failed in the scenario that tried to reflect peer characteristics of a P2P data sharing service such as Napster. Truthful measures that we used behaved poorly. Lastly, in the fourth test scenario simulating corporate workstations' availability patterns, our approach proved to be successful. One of the truthful measures that we tested resulted in a significant improvement of system availability over randomization and also other measures.\\
+
+The outcome of this work is a basis for creating a replication mechanism in a P2P data replication system and will be tested in deployments of our prototype system Nebulostore. Further research on the decentralized method may take into consideration other measures, not necessarily linear. Apart from that, more complex inputs might be considered, such as slot popularity among peers. Furthermore, development of approximation algorithms to the centralized replication problems presented in Chapter 3 might be a valuable contribution. Such algorithms may be used by a centralized node to adjust acceptance measures in real time and react to changing environment. In general, the problem of decentralized data replication is still open and waiting for new ideas.\\
 
 %
 %
