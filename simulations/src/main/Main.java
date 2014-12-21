@@ -22,7 +22,6 @@ import measure.peer.HalfStrongMeasure;
 import measure.peer.SumMeasure;
 import measure.peer.HalfWeakMeasure;
 import measure.sys.BasicSystemMeasure;
-import measure.sys.EquitableSystemMeasure;
 import measure.sys.SystemMeasure;
 
 /**
@@ -37,23 +36,21 @@ public class Main {
   private static final int runs = 10;
   private static final Random random = new Random(System.currentTimeMillis());
 
-  private static final int nPeers = 400;
+  private static final int nPeers = 1000;
   private static final int timeSlots = 24;
-  private static final int replicationSlots = 5;
+  private static final int replicationSlots = 3;
 
   public static void main(String[] args) {
     /*
      * Factories used in the experiment.
      */
     List<PeerFactory> factories = new ArrayList<>();
-    //final int expectedCoverage = 12;
-    // factories.add(new UniformPeerFactory(expectedCoverage,
-    // random.nextLong()));
-    //factories.add(new UniformContPeerFactory(expectedCoverage, random
-    // .nextLong()));
-    // factories.add(new NapsterPeerFactory(random.nextLong()));
-    // factories.add(new CorpUniformPeerFactory(random.nextLong()));
-    final double paretoShape = 0.1;
+    final int expectedCoverage = 8;
+    factories.add(new UniformPeerFactory(expectedCoverage, random.nextLong()));
+    factories.add(new UniformContPeerFactory(expectedCoverage, random.nextLong()));
+    factories.add(new NapsterPeerFactory(random.nextLong()));
+    factories.add(new CorpUniformPeerFactory(random.nextLong()));
+    final double paretoShape = 1.0;
     factories.add(new CorpParetoPeerFactory(paretoShape, random.nextLong()));
 
     /*
