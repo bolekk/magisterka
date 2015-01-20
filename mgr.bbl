@@ -1,4 +1,4 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{24}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -58,6 +58,11 @@ Sonja Buchegger, Doris Schi{\"o}berg, Le-Hung Vu, and Anwitaman Datta.
 \newblock Peerson: P2p social networking: early experiences and insights.
 \newblock In \emph{Proceedings of the Second ACM EuroSys Workshop on Social
   Network Systems}, pages 46--52. ACM, 2009.
+
+\bibitem[Burkard et~al.(2009)Burkard, Dell'Amico, and Martello]{assignment}
+Rainer~E Burkard, Mauro Dell'Amico, and Silvano Martello.
+\newblock \emph{Assignment Problems, Revised Reprint}.
+\newblock Siam, 2009.
 
 \bibitem[Dean and Ghemawat(2008)]{mapreduce}
 Jeffrey Dean and Sanjay Ghemawat.
