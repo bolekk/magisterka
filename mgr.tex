@@ -49,13 +49,13 @@ linesnumbered]{algorithm2e}
 
 \title{Data replication in peer-to-peer storage systems}
 
-\tytul{Replikacja danych w systemach peer-to-peer.}
+\tytul{Replikacja danych w systemach peer-to-peer}
 
 \kierunek{Informatics}
 
 \opiekun{Krzysztof Rządca Ph.D.}
 
-\date{December 2014}
+\date{February 2015}
 
 %wg klasyfikacji Socrates-Erasmus:
 \dziedzina{ 
@@ -205,7 +205,7 @@ In Napster's case, the architecture of the client and communication protocols we
 Organizationally-decentralized systems are much harder to design and maintain. Apart from all the problems of ordinary distributed systems, factors such as member incentives or unpredictable churn become important.\\
 
 A big advantage of an organizationally-decentralized system is potentially higher privacy protection. It is hard for one entity to control some data when it is distributed among random anonymous participants.
-Another advantages include increased anonymity and transparency. When software is released together with its source code it is often subject to a careful scrutiny of volunteers all over the Internet. Thus, it is easier to convince users that the software is in fact doing what it is supposed to do.\\
+Another advantages include increased anonymity and transparency. When software is released together with its source code it is often subject to a careful scrutiny. Thus, it is easier to convince users that the software is in fact doing what it is supposed to.\\
 
 \subsection{Bittorrent}
 
@@ -215,7 +215,7 @@ After obtaining a torrent file, the Bittorrent client can connect to the tracker
 
 \subsection{Distributed Hash Tables}
 
-A Distributed Hash Table (DHT) is a service that provides functionality similar to a regular hash table, namely storage and retrieval of (key, value) pairs. The system is decentralized and every participating node is responsible for a piece of collective information. Data distribution among the nodes depends on key space partitioning, which is often based on some {\bf consistent hashing} algorithm in order to facilitate adding and removing participants. Typically, every node stores a set of links to other nodes called a {\it routing table}, which is of small size relatively to the whole system's size $N$, such as $O(\log N)$. Most of DHT implementations also add data redundancy to account for node failures or disconnections. Nebulostore system uses Kademlia \cite{kademlia} DHT to store meta-data (see Section \ref{sect:kademlia}).\\
+A Distributed Hash Table (DHT) is a service that provides functionality similar to a regular hash table, namely storage and retrieval of (key, value) pairs. The system is decentralized and every participating node is responsible for a piece of collective information. Data distribution among the nodes depends on key space partitioning, which is often based on some {\bf consistent hashing} algorithm in order to facilitate adding and removing participants. Typically, every node stores a set of links to other nodes called a {\it routing table}, which is of small size relatively to the whole system's size $N$, such as $O(\log N)$. Most of DHTs also add data redundancy to account for node failures. Nebulostore uses Kademlia \cite{kademlia} to store meta-data (Section \ref{sect:kademlia}).\\
 
 \section{A classification attempt}
 
@@ -244,7 +244,7 @@ The table below is an attempt to summarize and classify the systems we discussed
 By infrastructure we understand connections between internal system nodes, i.e. cables, routers, switches etc.
 Centralized ownership of hardware and infrastructure means that the system is deployed in a data center belonging to a particular organization. Ownership of software means that the software used by a machine participating in the system is to some extent proprietary and cannot be modified easily. Finally, by ownership of a central server we understand some dependency on a particular service existing in the Internet, which is hard to replicate. It is usually tied to some proprietary server-side software, valuable data collection, brand and also community that was created around it.\\
 
-The last row of the table consists of what we consider organizationally-decentralized systems, including Nebulostore, which will be discussed in detail in the next chapter. Rather than thinking of them as physical, existing systems, we might understand them as {\bf ideas} or {\bf definitions} of systems that can be created within any environment and exist in many instances that are not connected to one another in any way. An example of such case might be a company that uses the Bittorrent protocol to distribute data within the internal network. This is a different approach than systems such as Skype, where everyone connects to the same network, created and to some extent controlled by a private company, Skype Technologies. One may try to replicate Skype's network by creating similar software and an alternative login server. Proprietary software or protocols is only a minor problem here. The most difficult part would be to create the incentives for users to join the alternative network instead the original Skype, to market which the company has put a lot of effort and resources. Of course, using a third-party provider does not come without risks, such as potential privacy loss. This is one of the reasons why organizationally-decentralized distributed systems are valuable and have many use cases in various environments.\\
+The last row of the table consists of what we consider organizationally-decentralized systems, including Nebulostore, which will be discussed in detail in the next chapter. Rather than thinking of them as physical, existing systems, we might understand them as {\bf ideas} or {\bf definitions} of systems that can be created within any environment and exist in many instances that are not connected to one another in any way. An example of such case might be a company that uses the Bittorrent protocol to distribute data within the internal network. This is a different approach than systems such as Skype, where everyone connects to the same network, created and to some extent controlled by a private company, Skype Technologies. One may try to replicate Skype's network by creating similar software and an alternative login server. Proprietary software or protocols is only one of the problems. The most difficult part would be to create the incentives for users to join the alternative network instead the original Skype, to market which the company has put a lot of effort and resources. Of course, using a third-party provider does not come without risks, such as potential privacy loss. This is one of the reasons why organizationally-decentralized distributed systems are valuable and have many use cases in various environments.\\
 
 % INNE:
 % BIONC, seti@home, folding@home (one nie sa P2P); Spotify (jak skype), Wuala (cloud, kiedys byl p2p), Bitcoin (nie storage))
@@ -258,14 +258,14 @@ The last row of the table consists of what we consider organizationally-decentra
 %
 \chapter{Nebulostore --- a peer-to-peer storage system}\label{chap::nebulo}
 
-In this chapter, we present Nebulostore --- an experimental, peer-to-peer storage system. Initially, Nebulostore was an attempt to create an organizationally-decentralized alternative to cloud storage with a target use case of serving as a back-end part of PeerSon distributed social network \cite{peerson}. During the development process we realized that there is a number of other, potentially attractive, use cases, which we discuss below. Moreover, we describe a few components of Nebulostore, which are based on standard solutions, such as Kademlia distributed hash table \cite{kademlia} or T-Man gossiping protocol \cite{tman}.\\
+In this chapter we present Nebulostore --- an experimental, peer-to-peer storage system. Initially, Nebulostore was an attempt to create an organizationally-decentralized alternative to cloud storage with a target use case of serving as a back-end part of PeerSon distributed social network \cite{peerson}. During the development process we realized that there is a number of other, potentially attractive, use cases, which we discuss below. Moreover, we describe a few components of Nebulostore, which are based on standard solutions, such as Kademlia distributed hash table \cite{kademlia} or T-Man gossiping protocol \cite{tman}.\\
 
 \section{Goals and use cases}
 
 Contemporary cloud storage services are created to abstract the infrastructure away from the user and provide her with an interface to write, read, create, delete and share her data. Typically, a single entity owns software and hardware required to ensure reliable service and charges its customers for the ability to use it within agreed limits. Apart from abstraction, the key goals of cloud storage are to:
 \begin{itemize}
 \item Increase data {\bf availability}. In most solutions, the user can access her data at any time and, more importantly, from any place in the world with an Internet connection (as most services include a web client).
-\item Increase data {\bf security}, which is a twofold issue. Firstly, the data is usually replicated among many machines thus reducing the risk of loss due to hardware or software malfunction. Secondly, large companies, dedicated to data storage can afford more sophisticated protection against cyber-attacks than its customers.
+\item Increase data {\bf security}, which is a twofold issue. Firstly, the data is usually replicated among many machines thus reducing the risk of loss due to hardware or software malfunction. Secondly, large companies dedicated to data storage can afford more sophisticated protection against cyber-attacks than its customers.
 \end{itemize}
 Cloud storage services can be further divided into personal file hosting services, such as Apple iCloud \cite{icloud} or enterprise-level services, such as Amazon S3 \cite{amazon}.\\
 
@@ -307,7 +307,7 @@ Nebulostore implements the actor model where actors are represented internally a
 
 The {\bf communication} component of Nebulostore is responsible for sending messages between peers over the network. Another task is to manage meta-data including, but not limited to persistent addresses conversion and replication contracts. Depending on configuration, meta-data can be stored centrally, in a database instance running on a designated and globally-known host. Alternatively, it can be stored in a DHT created within the existing Nebulostore network. Communication component offers a custom implementation of Kademlia \cite{kademlia} DHT. Moreover, this component manages the overlay network of peers and provides discovery information to other modules. Peer discovery is realized via gossiping \cite{gossiping} --- Nebulostore provides an implementation of T-Man gossiping protocol \cite{tman}.\\
 
-{\bf Broker} is a component which task is to offer replication contracts and reply to such offers. Broker's goal is to optimize the availability of its owner's files by selecting the best replication groups according to a given logic. Various approaches and algorithms for replication agreements are discussed in Chapter 3.\\
+{\bf Broker} is a component which task is to offer replication contracts and reply to such offers. Broker's goal is to optimize the availability of its owner's files by selecting the best replicas according to a given logic. Various approaches and algorithms for replication agreements are discussed in Chapter 3.\\
 
 {\bf Replicator} is a disk interface used when data reads or writes are necessary. It provides an abstraction of a key-value data storage and encapsulates all the subtleties related to file versioning and two-way commits.\\
 
@@ -367,7 +367,7 @@ $$ESM(P) = \sum_{p\in P} \sqrt{av_{total}(p)}$$
 
 \section{Availability model}\label{sect:ava}
 
-Two models of peers' availabilities --- the {\it probabilistic} model and the {\it time-slot} model were proposed in \cite{krz}. We provide necessary definitions and briefly discuss advantages and disadvantages of both models. Later we focus only on the time-slot model so existing results within the probabilistic model will be briefly presented in the following section.
+Two models of peers' availabilities --- the {\it probabilistic} model and the {\it time-slot} model were proposed in \cite{krz}. We provide necessary definitions and briefly discuss advantages and disadvantages of both models. Later we focus only on the time-slot model so existing results within the probabilistic model are briefly presented in the following section.
 
 \subsection{Probabilistic model}
 
@@ -431,7 +431,7 @@ where all peers $p_1\ldots p_k$ are currently replicating $p$'s data.
 
 % najpierw kliki - FPR
 
-Let us begin with an optimization problem proposed by \cite{krz} together with a proof of its NP-completeness, which is a contribution of this work.\\
+Let us begin with an optimization problem proposed by \cite{krz} together with a proof of its NP-hardness, which is a contribution of this work.\\
 
 An instance of the {\bf Fair Peer Replication} (FPR) problem consists of the set of peers $\{p_1,\ldots,p_n\}$ in a time-slot model with $T$ intervals. The optimization goal is to assign each peer to a clique, such that all the cliques are complete $(\forall G_k:A_{G_k} = \mathcal{T})$ and the size of the largest clique is minimized ($\min\max(|G_1|,\ldots,|G_N|)$).\\
 
@@ -462,7 +462,7 @@ The FPR problem aims at achieving a state with perfect availability and minimize
 
 An instance of the {\bf Uniform Peer Replication} (UPR) problem consists of the set of peers $P=\{p_1,\ldots,p_n\}$ in a time-slot model with $T$ intervals. Each peer has exactly $K$ replication slots available. The optimization goal is to assign exactly $K$ peers (replicas) to every peer so that each peer replicates exactly $K$ other peers and the sum of all resulting availabilities is maximized.\\
 
-When $K=1$ the problem can be solved in polynomial time. The idea is to create a set of copies of all peers $P'$ and solve the assignment problem between sets $P$ and $P'$. The assignment problem can be solved in polynomial time for example by using the Hungarian algorithm \cite{assignment}. For $K\geqslant2$ the problem becomes a simplified 3-dimensional (or higher) matching. Since 3-dimensional matching is a well-known NP-complete problem, we believe that the UPR problem for $K\geqslant2$ is NP-hard.\\
+When $K=1$ the problem can be solved in polynomial time. The idea is to create a set of copies of all peers $P'$ and solve the assignment problem between sets $P$ and $P'$. The assignment problem can be solved in polynomial time for example by using the Hungarian algorithm \cite{assignment}. For $K\geqslant2$ the problem becomes a simplified version of 3-dimensional (or higher) matching, which is a well-known NP-complete problem. This argument is not sufficient to construct a proof. However, we believe that the UPR problem for $K\geqslant2$ is NP-hard as well.\\
 
 \section{De-centralized approach}\label{sect:decentralized}
 
@@ -482,7 +482,7 @@ Let us formalize the notion of measure that we informally introduced and also em
 A {\bf peer measure} (or just measure) is a function from a pair of peers (replica and requester) to an integer.
 \end{definition}
 
-Generally, highest integer values of the measure mean that when replica starts to replicate requester's data, measure's user situation will improve the most. The user of the measure may vary depending on the measure type (details below).\\
+Generally, highest integer values of the measure mean that when replica starts to replicate requester's data, situation of the measure's user will improve the most. The user of the measure may vary depending on the measure type (details below).\\
 
 We will later be interested in measures that are truthful.
 
@@ -504,11 +504,11 @@ The {\bf private} measures (PM) are all the peer measures used by peers to selec
 
 Only if a replicator decides that the querying peer is among K best peers according to acceptance measure, the data will be replicated. Every peer can use any private measure it prefers and it is only the peer itself who selfishly benefits from being accepted by replicas of high measure values.\\
 
-Private measures are secret to peers so they can be chosen arbitrarily and even changed over time to adapt to changing system conditions. However, realistically, peers will be always selfishly interested in maximizing availability of their data. Since we do not have any control over the measures, we make a simplifying assumption that every peer chooses replicators to query in a way that will maximize their availability {\bf in their current situation}. Precisely - every peer in any moment of time will query replicas starting from the one that (if successful) will lead to highest time slot coverage (possibly after removing some other currently co-operating replica if all replication slots are taken). We will refer to the private measure that was just described as the {\bf selfish private measure}.\\
+Private measures are secret to peers so they can be chosen arbitrarily and even changed over time to adapt to changing system conditions. However, realistically, peers will be always selfishly interested in maximizing availability of their data. Since we do not have any control over the measures, we make a simplifying assumption that every peer chooses replicators to query in a way that will maximize their availability {\bf in their current situation}. Every peer in any moment of time will query replicas starting from the one that (if successful) will lead to highest time slot coverage (possibly after removing some other currently co-operating replica if all replication slots are taken). We will refer to the private measure that was just described as the {\bf selfish private measure}.\\
 
 It is worth noting that since selfish private measure depends on the current situation of the peer, the rank list of potential replicas may drastically change after establishing a replication contract. That is why our distributed game does not necessarily converge to a stable replication state. We address this problem in Chapter 4 when building the simulation environment.\\
 
-From now on, we are interested in analyzing only acceptance measures with all private measures equal to the selfish private measure defined above. Selecting a proper acceptance measure is the key factor of system's performance. Manipulating the acceptance measure is a way to shift the equilibrium in favor of either better or worse peers. Let us analyze two simple examples that represent two extremes.\\
+From now on, we are interested in analyzing only acceptance measures with all private measures equal to the selfish private measure defined above. Selecting a proper acceptance measure is the key factor of system's performance. Manipulating the acceptance measure is a way to shift the equilibrium in favor of either stronger or weaker peers. Let us analyze two simple examples that represent two extremes.\\
 
 % chyba nie jest jasne jaki to "stronger" peer - zdefiniuj strength przy definicjach modeli
 
@@ -561,7 +561,7 @@ There are a few analyses of traces from P2P file-sharing systems, which populari
 
 The authors of \cite{edonkey} claim to have traced 14 million eDonkey peers over the period of 27 days. They came to a similar conclusion that peers who were in the system for at least 10 days had 20\% availability on average. They also discovered that peer sessions were long, 9 hours on average, but with high variance. Over half of the peers had the average session length of 3 hours or less.\\
 
-We can observe that a significant number of peers tend to connect only to download files (probably also uploading some content during this period) and disconnects immediately after they have obtained them. We do not think this will be a typical behavior of Nebulostore clients. Nebulostore peers have incentives to be as highly-available as possible in order to receive strong replicas for their data.\\
+We can observe that a significant number of peers tend to connect only to download files (probably also uploading some content during this period) and disconnects immediately after they have obtained them. We do not think this will be a typical behavior of Nebulostore clients. Nebulostore peers have incentives to be as highly-available as possible in order to receive strong replicas for their own data.\\
 
 \subsection{BOINC systems analysis}
 
@@ -569,9 +569,9 @@ BOINC (Berkeley Open Infrastructure for Network Computing) is a freely-available
 
 The most interesting contribution of \cite{availability} is an attempt to classify peers into clusters of similar patterns of availability. Authors came to a conclusion that 90\% of peers are always on or always off and the remaining 10\% of peers can be further divided into groups that represent either cyclic behavior (correlated with hours in a day or days in a week) or behave randomly. Consistently, authors of \cite{seti} claim that about 6\% of peers have deterministic, cyclic patterns of availability. Furthermore, longest 20\% of availability intervals contribute to 90\% of overall availability, which means that the core of BOINC is made of highly-available peers.\\
 
-Another independent analysis \cite{storage} points out that the average availability of SETI@HOME machines is 81\%. The average host lifetime before experiencing a permanent failure is 91 days. When it comes to disk space, it is normally distributed with an average of 50\% of disk space available.\\
+Another independent analysis \cite{storage} points out that the average availability of SETI@HOME machines is 81\%. The average host lifetime before experiencing a permanent failure is 91 days. Disk space is normally distributed with an average of 50\% of space available.\\
 
-It is worth noting that BOINC has in fact a client-server architecture, not a P2P one. However, we still consider the behavior of BOINC clients to be closely related to Nebulostore clients' behavior.\\
+It is worth noting that BOINC has a client-server architecture, not a P2P one. However, we consider the behavior of BOINC clients to be closely related to Nebulostore users' behavior.\\
 
 \subsection{Backup system deployment}
 
@@ -594,7 +594,7 @@ Acceptance measures used in the experiments are the three measures defined in Ch
 \end{itemize}
 We discovered that these two linear combinations behave as expected, i.e. results of experiments with $AM_{half-strong}$ lie between those of $AM_{strong}$ and $AM_{sum}$. Similarly, results of experiments with $AM_{half-weak}$ lie between those of $AM_{weak}$ and $AM_{sum}$. We decided not to put them on graphs to keep the images cleaner. Two measures that are truthful, namely $AM_{sum}$ and $AM_{strong}$ are the most interesting ones from the perspective of system creators.\\
 
-Finally, we run one additional simulation - a random one. In that case, every peer is randomly assigned $K$ other peers from the system. Please note that such scenario is also unsustainable and serves only as an interesting comparison.\\
+Finally, we run one additional simulation --- a random one. In that case, every peer is randomly assigned $K$ other peers from the system. Please note that such scenario is also unsustainable and serves only as an interesting comparison.\\
 
 We use four different test scenarios with the following arrangements of peers' availabilities.\\
 
@@ -602,7 +602,7 @@ We use four different test scenarios with the following arrangements of peers' a
 
 2. {\bf Uniform continuous(n)}. For every peer, we randomly select a time slot $t$ and make this peer available for $n$ consecutive time slots starting at $t$ (cyclically wrapped if necessary), where $n\in\{4,6,8,10,12\}$. This test case aims at reflecting diurnal patterns of real users, that is being available for some continuous part of day (e.g. at work) and unavailable for the rest of the day.\\
 
-3. {\bf Napster}. This setting is based on data presented in the previous section that is coming from Napster/Gnutella analyses \ref{napster}. Here 20\% of peers is available on average in 20 random slots. 30\% of peers is available on average in 2 random slots. The rest of the peers (50\%) are available in exactly one random slot out of 24. In this scenario we test behavior close to this of P2P file-sharing networks' users.\\
+3. {\bf Napster}. This setting is based on data presented in the previous section that is coming from Napster/Gnutella analyses \cite{napster}. Here 20\% of peers is available on average in 20 random slots. 30\% of peers is available on average in 2 random slots. The rest of the peers (50\%) are available in exactly one random slot out of 24. In this scenario we test behavior close to this of P2P file-sharing networks' users.\\
 
 4. {\bf Corporate($\alpha$)}. The corporate setting is taken from \cite{krz} and is supposed to better reflect the real time zone distribution, which is not uniform. All peers are available in a continuous interval of time slots, of which 10\% is available in 8 slots, 25\%  in 7 slots, 30\% in 6 slots and the remaining 35\% in only 2 slots. The number of replication slots is set to $K=5$ and the starting slot is chosen randomly from a Pareto distribution with the shape parameter equal to $\alpha$ for $\alpha \in \{0.1, 0.5, 1.0, 1.5, 2.0\}$. Additionally, to reflect the fact that most of the Internet traffic comes from four regions that are USA, China, Europe and India, the list of time slots is permuted. The permutation (of numbers from 0 to 23) that we use is as follows: $\{ 0, 15, 7, 12, 1, 16, 8, 13, 2, 17, 9, 14, 3, 18, 10, 4, 19, 11, 5, 20, 6, 21, 22, 23\}$. First four positions of our permutation are chosen to reflect relative differences of average time zones in the four regions ordered as above. This means that if we take the average US timezone as a reference point $+0$, then Chinese would correspond to $+15$, European to $+7$ and Indian to $+12$. The pattern is then cyclically repeated. This is different to \cite{krz} where the permutation is randomly chosen before each simulation. \\
 
@@ -633,6 +633,7 @@ Randomization performs relatively well in case of $K=1$. When all peers' availab
 \label{uniform_5}
 \end{figure}
 
+\newpage
 
 Results for the {\bf uniform continuous} setting are depicted in figures \ref{uni_cont_1}, \ref{uni_cont_3} and \ref{uni_cont_5}. For $K=1$ (figure \ref{uni_cont_1}) we can see that $AM_{strong}$ gives almost the same results as randomization and they both significantly outperform $AM_{sum}$ and $AM_{weak}$. For $K=3$ and $K=5$, randomization is significantly worse that everything else and $AM_{strong}$ provides the best overall system availability.\\
 
@@ -684,7 +685,7 @@ In the last of our test scenarios, {\bf corporate}, we test five values for the 
 \label{corp_alpha_1}
 \end{figure}
 
-All results were consistent when we repeated the experiments. The average standard deviation for all experiments was 0.007 and almost never exceeded 0.02.\\
+All results were consistent when we repeated the experiments. The average standard deviation for all experiments was 0.007 and never exceeded 0.02.\\
 
 \chapter{Summary and Conclusions}\label{chap:conclusions}
 
